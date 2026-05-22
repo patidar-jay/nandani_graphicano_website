@@ -243,3 +243,52 @@ magnets.forEach(btn => {
         btn.style.transform = 'translate(0px, 0px)';
     });
 });
+
+// Contact Form Submission
+async function submitContactForm(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('contactName').value;
+    const email = document.getElementById('contactEmail').value;
+    const message = document.getElementById('contactMessage').value;
+    const submitBtn = document.getElementById('contactSubmitBtn');
+    
+    if (!name || !email || !message) return;
+    
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    
+    try {
+        if (typeof window.supabaseClient === 'undefined') {
+            throw new Error('Supabase client not loaded.');
+        }
+        
+        const { error } = await window.supabaseClient
+            .from('contact_messages')
+            .insert([{
+                name: name,
+                email: email,
+                message: message,
+                status: 'Unread'
+            }]);
+            
+        if (error) throw error;
+        
+        submitBtn.textContent = 'Message Sent!';
+        submitBtn.style.backgroundColor = '#4CAF50';
+        document.getElementById('contactForm').reset();
+        
+        setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.backgroundColor = '';
+            submitBtn.disabled = false;
+        }, 4000);
+        
+    } catch (err) {
+        console.error('Error sending message:', err);
+        alert('Sorry, there was an error sending your message. Please try again or use WhatsApp.');
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+}

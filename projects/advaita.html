@@ -193,17 +193,17 @@
                     </div>
                 </div>
                 <div class="contact-form glass-panel" style="padding: 2.5rem;">
-                    <form onsubmit="event.preventDefault(); alert('Message feature coming soon! Please use WhatsApp for direct contact.');">
+                    <form id="contactForm" onsubmit="submitContactForm(event)">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Your Name" required>
+                            <input type="text" id="contactName" class="form-input" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Your Email" required>
+                            <input type="email" id="contactEmail" class="form-input" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="Tell me about your project..." required></textarea>
+                            <textarea id="contactMessage" class="form-input" rows="5" placeholder="Tell me about your project..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                        <button type="submit" id="contactSubmitBtn" class="btn btn-accent" style="width:100%;">Send Message</button>
                     </form>
                 </div>
             </div>
