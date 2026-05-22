@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advatika Agronics | Smart Agriculture Solutions</title>
+    <meta name="description" content="Advatika Agronics — Premium agronomy solutions, sustainable farming technology, and agricultural innovation for the modern farmer.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-inner">
+            <span class="loader-logo">Advatika</span>
+            <div class="loader-bar"><div class="loader-progress" id="loaderProgress"></div></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <header id="header">
+        <div class="nav-container">
+            <a href="#" class="logo" id="logoLink">
+                <span class="logo-icon"><i class="fa-solid fa-seedling"></i></span>
+                <span class="logo-text">Advatika<em>Agronics</em></span>
+            </a>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#solutions" class="nav-link">Solutions</a></li>
+                    <li><a href="#work" class="nav-link">Work</a></li>
+                    <li><a href="#impact" class="nav-link">Impact</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <a href="#contact" class="btn-nav">Get Started</a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#about" class="mob-link">About</a></li>
+            <li><a href="#solutions" class="mob-link">Solutions</a></li>
+            <li><a href="#work" class="mob-link">Work</a></li>
+            <li><a href="#impact" class="mob-link">Impact</a></li>
+            <li><a href="#contact" class="mob-link">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- HERO -->
+    <section id="hero" class="hero">
+        <div class="hero-bg-img"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-grid-lines"></div>
+        <div class="hero-content">
+            <div class="hero-tag reveal-up">Agriculture Reimagined</div>
+            <h1 class="hero-title reveal-up">
+                Growing <span class="accent-text">Tomorrow's</span><br>World, Today.
+            </h1>
+            <p class="hero-desc reveal-up">Smart agronomy solutions that empower farmers with cutting-edge technology, sustainable practices, and data-driven insights.</p>
+            <div class="hero-actions reveal-up">
+                <a href="#work" class="btn-primary">Explore Our Work <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="#about" class="btn-ghost">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-scroll-hint">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+        <div class="hero-stats">
+            <div class="h-stat reveal-up">
+                <strong>500+</strong>
+                <span>Farmers Served</span>
+            </div>
+            <div class="h-stat-divider"></div>
+            <div class="h-stat reveal-up">
+                <strong>12K+</strong>
+                <span>Acres Covered</span>
+            </div>
+            <div class="h-stat-divider"></div>
+            <div class="h-stat reveal-up">
+                <strong>40%</strong>
+                <span>Yield Increase</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE TICKER -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span>Precision Agriculture</span><span class="dot">●</span>
+                <span>Sustainable Farming</span><span class="dot">●</span>
+                <span>Crop Analytics</span><span class="dot">●</span>
+                <span>Smart Irrigation</span><span class="dot">●</span>
+                <span>Soil Intelligence</span><span class="dot">●</span>
+                <span>AgriTech Innovation</span><span class="dot">●</span>
+                <span>Farm Management</span><span class="dot">●</span>
+                <span>Drone Monitoring</span><span class="dot">●</span>
+                <span>Precision Agriculture</span><span class="dot">●</span>
+                <span>Sustainable Farming</span><span class="dot">●</span>
+                <span>Crop Analytics</span><span class="dot">●</span>
+                <span>Smart Irrigation</span><span class="dot">●</span>
+                <span>Soil Intelligence</span><span class="dot">●</span>
+                <span>AgriTech Innovation</span><span class="dot">●</span>
+                <span>Farm Management</span><span class="dot">●</span>
+                <span>Drone Monitoring</span><span class="dot">●</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about" class="about section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-left">
+                    <div class="section-label reveal-left">Who We Are</div>
+                    <h2 class="section-heading reveal-left">Bridging Science<br>& Soil</h2>
+                    <p class="about-body reveal-left">Advatika Agronics is a forward-thinking agriculture company dedicated to transforming traditional farming through technology. We combine deep agronomic expertise with precision technology to deliver solutions that are both practical and transformative.</p>
+                    <p class="about-body reveal-left">From seed selection to harvest analytics, our end-to-end approach ensures every farm reaches its maximum potential — sustainably, profitably, and at scale.</p>
+                    <div class="about-cta reveal-left">
+                        <a href="#contact" class="btn-primary">Partner With Us <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="about-right reveal-right">
+                    <div class="about-img-wrap">
+                        <img src="assets/images/advatika-1.jpeg" alt="Advatika Agronics field operations" class="about-img">
+                        <div class="about-img-card">
+                            <i class="fa-solid fa-award"></i>
+                            <div>
+                                <strong>ISO Certified</strong>
+                                <span>Quality Assured</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section id="solutions" class="solutions section">
+        <div class="container">
+            <div class="section-head">
+                <div class="section-label reveal-up">What We Offer</div>
+                <h2 class="section-heading reveal-up">Our Solutions</h2>
+                <p class="section-sub reveal-up">Comprehensive agronomy services designed to transform every stage of your agricultural journey.</p>
+            </div>
+            <div class="solutions-grid">
+                <div class="sol-card reveal-up">
+                    <div class="sol-icon"><i class="fa-solid fa-microscope"></i></div>
+                    <h3>Soil Intelligence</h3>
+                    <p>Deep soil profiling, nutrient mapping, and micro-climate analysis for precision input application.</p>
+                    <div class="sol-tags"><span>Soil Health</span><span>Mapping</span></div>
+                </div>
+                <div class="sol-card reveal-up">
+                    <div class="sol-icon"><i class="fa-solid fa-droplet"></i></div>
+                    <h3>Smart Irrigation</h3>
+                    <p>IoT-driven irrigation systems that reduce water usage by up to 50% while maximizing crop health.</p>
+                    <div class="sol-tags"><span>IoT</span><span>Water Saving</span></div>
+                </div>
+                <div class="sol-card reveal-up">
+                    <div class="sol-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3>Crop Analytics</h3>
+                    <p>AI-powered yield prediction, disease detection, and crop performance dashboards.</p>
+                    <div class="sol-tags"><span>AI</span><span>Data</span></div>
+                </div>
+                <div class="sol-card reveal-up">
+                    <div class="sol-icon"><i class="fa-solid fa-helicopter"></i></div>
+                    <h3>Drone Monitoring</h3>
+                    <p>Aerial surveillance with multispectral imaging to identify stress zones and optimize field operations.</p>
+                    <div class="sol-tags"><span>Drones</span><span>NDVI</span></div>
+                </div>
+                <div class="sol-card reveal-up">
+                    <div class="sol-icon"><i class="fa-solid fa-seedling"></i></div>
+                    <h3>Seed Advisory</h3>
+                    <p>Expert recommendations on high-yield, climate-resilient seed varieties suited to your soil type.</p>
+                    <div class="sol-tags"><span>Genetics</span><span>R&D</span></div>
+                </div>
+                <div class="sol-card reveal-up">
+                    <div class="sol-icon"><i class="fa-solid fa-leaf"></i></div>
+                    <h3>Sustainable Practices</h3>
+                    <p>Carbon-neutral farming protocols, organic transition support, and eco-certification guidance.</p>
+                    <div class="sol-tags"><span>Organic</span><span>Carbon</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WORK / GALLERY -->
+    <section id="work" class="work section">
+        <div class="container">
+            <div class="section-head">
+                <div class="section-label reveal-up">Our Portfolio</div>
+                <h2 class="section-heading reveal-up">Field Work &<br>Real Results</h2>
+            </div>
+            <div class="work-filter reveal-up">
+                <button class="wf-btn active" data-filter="all">All Projects</button>
+                <button class="wf-btn" data-filter="field">Field Operations</button>
+                <button class="wf-btn" data-filter="tech">AgriTech</button>
+                <button class="wf-btn" data-filter="crop">Crop Management</button>
+            </div>
+            <div class="work-grid">
+                <div class="work-item reveal-up" data-cat="field">
+                    <div class="work-img-wrap">
+                        <img src="assets/images/advatika-1.jpeg" alt="Advatika field project 1">
+                        <div class="work-overlay">
+                            <span class="work-cat">Field Operations</span>
+                            <h4>Precision Farming Setup</h4>
+                            <p>Multi-acre precision input deployment with real-time monitoring.</p>
+                        </div>
+                    </div>
+                    <div class="work-meta">
+                        <span class="tag">2024</span>
+                        <span class="tag">Gujarat</span>
+                    </div>
+                </div>
+                <div class="work-item reveal-up" data-cat="tech">
+                    <div class="work-img-wrap">
+                        <img src="assets/images/advatika-2.jpeg" alt="Advatika AgriTech project">
+                        <div class="work-overlay">
+                            <span class="work-cat">AgriTech</span>
+                            <h4>Smart Sensor Network</h4>
+                            <p>IoT sensor grid deployment across 500+ acres for live soil tracking.</p>
+                        </div>
+                    </div>
+                    <div class="work-meta">
+                        <span class="tag">2024</span>
+                        <span class="tag">Maharashtra</span>
+                    </div>
+                </div>
+                <div class="work-item reveal-up" data-cat="crop">
+                    <div class="work-img-wrap">
+                        <img src="assets/images/advatika-3.jpeg" alt="Advatika crop management">
+                        <div class="work-overlay">
+                            <span class="work-cat">Crop Management</span>
+                            <h4>Wheat Yield Optimization</h4>
+                            <p>38% yield increase using our AI advisory and precision input system.</p>
+                        </div>
+                    </div>
+                    <div class="work-meta">
+                        <span class="tag">2023</span>
+                        <span class="tag">Rajasthan</span>
+                    </div>
+                </div>
+                <div class="work-item reveal-up" data-cat="field">
+                    <div class="work-img-wrap">
+                        <img src="assets/images/advatika-4.jpeg" alt="Advatika field operations">
+                        <div class="work-overlay">
+                            <span class="work-cat">Field Operations</span>
+                            <h4>Irrigation Overhaul</h4>
+                            <p>Complete drip irrigation redesign reducing water usage by 45%.</p>
+                        </div>
+                    </div>
+                    <div class="work-meta">
+                        <span class="tag">2023</span>
+                        <span class="tag">MP</span>
+                    </div>
+                </div>
+                <div class="work-item reveal-up" data-cat="tech">
+                    <div class="work-img-wrap">
+                        <img src="assets/images/advatika-5.jpeg" alt="Advatika drone monitoring">
+                        <div class="work-overlay">
+                            <span class="work-cat">AgriTech</span>
+                            <h4>Aerial NDVI Survey</h4>
+                            <p>Multispectral drone mapping for 1,200-acre cotton farm stress analysis.</p>
+                        </div>
+                    </div>
+                    <div class="work-meta">
+                        <span class="tag">2024</span>
+                        <span class="tag">Punjab</span>
+                    </div>
+                </div>
+                <div class="work-item reveal-up" data-cat="crop">
+                    <div class="work-img-wrap">
+                        <img src="assets/images/advatika-6.jpeg" alt="Advatika sustainable farming">
+                        <div class="work-overlay">
+                            <span class="work-cat">Crop Management</span>
+                            <h4>Organic Transition Program</h4>
+                            <p>Full farm organic certification pathway completed in 18 months.</p>
+                        </div>
+                    </div>
+                    <div class="work-meta">
+                        <span class="tag">2024</span>
+                        <span class="tag">Karnataka</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMPACT STATS -->
+    <section id="impact" class="impact section">
+        <div class="container">
+            <div class="impact-grid">
+                <div class="impact-left">
+                    <div class="section-label reveal-left">Our Impact</div>
+                    <h2 class="section-heading reveal-left">Numbers That<br>Tell Our Story</h2>
+                    <p class="about-body reveal-left">Every metric represents a real farmer whose livelihood improved, a field that flourished, and a community that grew stronger.</p>
+                    <a href="#contact" class="btn-primary reveal-left">Join Our Network <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="impact-right">
+                    <div class="stat-card reveal-up">
+                        <h3 class="stat-num" data-target="500">0</h3>
+                        <p>Farmers Empowered</p>
+                        <div class="stat-bar"><div class="stat-fill" style="width:85%"></div></div>
+                    </div>
+                    <div class="stat-card reveal-up">
+                        <h3 class="stat-num" data-target="12000">0</h3>
+                        <p>Acres Under Management</p>
+                        <div class="stat-bar"><div class="stat-fill" style="width:70%"></div></div>
+                    </div>
+                    <div class="stat-card reveal-up">
+                        <h3 class="stat-num" data-target="40">0</h3>
+                        <p>% Average Yield Increase</p>
+                        <div class="stat-bar"><div class="stat-fill" style="width:40%"></div></div>
+                    </div>
+                    <div class="stat-card reveal-up">
+                        <h3 class="stat-num" data-target="98">0</h3>
+                        <p>% Client Satisfaction</p>
+                        <div class="stat-bar"><div class="stat-fill" style="width:98%"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process" class="process section">
+        <div class="container">
+            <div class="section-head">
+                <div class="section-label reveal-up">How We Work</div>
+                <h2 class="section-heading reveal-up">Our Process</h2>
+            </div>
+            <div class="process-steps">
+                <div class="proc-step reveal-up">
+                    <div class="proc-num">01</div>
+                    <div class="proc-body">
+                        <h3>Farm Assessment</h3>
+                        <p>We start with a comprehensive on-site audit of your soil, water, and crop conditions.</p>
+                    </div>
+                </div>
+                <div class="proc-arrow reveal-up"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="proc-step reveal-up">
+                    <div class="proc-num">02</div>
+                    <div class="proc-body">
+                        <h3>Data Analysis</h3>
+                        <p>Lab reports, satellite data, and sensor feeds are processed through our analytics engine.</p>
+                    </div>
+                </div>
+                <div class="proc-arrow reveal-up"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="proc-step reveal-up">
+                    <div class="proc-num">03</div>
+                    <div class="proc-body">
+                        <h3>Solution Design</h3>
+                        <p>A custom agronomy plan is crafted — tailored to your crops, budget, and goals.</p>
+                    </div>
+                </div>
+                <div class="proc-arrow reveal-up"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="proc-step reveal-up">
+                    <div class="proc-num">04</div>
+                    <div class="proc-body">
+                        <h3>Implementation</h3>
+                        <p>Our field experts deploy technology and protocols with on-ground support throughout.</p>
+                    </div>
+                </div>
+                <div class="proc-arrow reveal-up"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="proc-step reveal-up">
+                    <div class="proc-num">05</div>
+                    <div class="proc-body">
+                        <h3>Monitor & Grow</h3>
+                        <p>Continuous monitoring, seasonal reviews, and adaptive recommendations to maximize ROI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="testimonials section">
+        <div class="container">
+            <div class="section-head">
+                <div class="section-label reveal-up">Client Stories</div>
+                <h2 class="section-heading reveal-up">Farmers Trust Us</h2>
+            </div>
+            <div class="testi-grid">
+                <div class="testi-card reveal-up">
+                    <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p>"Advatika's soil analysis and crop advisory doubled my cotton yield in just one season. Their team is always available and deeply knowledgeable."</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar">R</div>
+                        <div>
+                            <strong>Ramesh Patel</strong>
+                            <span>Cotton Farmer, Gujarat</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card reveal-up">
+                    <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p>"The smart irrigation system they installed reduced our water costs by 40%. I've seen nothing like it. Truly the future of farming."</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar">S</div>
+                        <div>
+                            <strong>Sunita Desai</strong>
+                            <span>Sugarcane Grower, Maharashtra</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card reveal-up">
+                    <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p>"Their drone monitoring caught a pest infestation before it could spread. We saved 200 acres of wheat. Advatika literally saved our season."</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar">A</div>
+                        <div>
+                            <strong>Arjun Singh</strong>
+                            <span>Wheat Farmer, Punjab</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT / FOOTER -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-left">
+                    <a href="#" class="logo footer-logo">
+                        <span class="logo-icon"><i class="fa-solid fa-seedling"></i></span>
+                        <span class="logo-text">Advatika<em>Agronics</em></span>
+                    </a>
+                    <p class="footer-tagline">Growing Tomorrow's World, Today.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    </div>
+                    <div class="footer-contact-items">
+                        <a href="https://wa.me/919343407099" target="_blank"><i class="fa-brands fa-whatsapp"></i> +91 93434 07099</a>
+                        <a href="mailto:info@advatikaagronics.com"><i class="fa-regular fa-envelope"></i> info@advatikaagronics.com</a>
+                        <span><i class="fa-solid fa-location-dot"></i> Ahmedabad, Gujarat, India</span>
+                    </div>
+                </div>
+                <div class="footer-right">
+                    <h3>Let's Grow Together</h3>
+                    <p class="footer-form-sub">Tell us about your farm and we'll craft a solution just for you.</p>
+                    <form class="contact-form" id="contactForm" onsubmit="handleForm(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="fname" class="form-input" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" id="fphone" class="form-input" placeholder="Phone Number" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="femail" class="form-input" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="fservice" class="form-input">
+                                <option value="" disabled selected>Select a Service</option>
+                                <option>Soil Intelligence</option>
+                                <option>Smart Irrigation</option>
+                                <option>Crop Analytics</option>
+                                <option>Drone Monitoring</option>
+                                <option>Seed Advisory</option>
+                                <option>Sustainable Practices</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="fmsg" class="form-input" placeholder="Tell us about your farm and goals..." rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary full-width">Send Message <i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Advatika Agronics. All Rights Reserved.</p>
+                <p>Designed by <a href="../index.html">Nandani Graphicano</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/919343407099" class="wa-float" target="_blank" aria-label="WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

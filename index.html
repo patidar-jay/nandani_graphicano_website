@@ -23,7 +23,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
     
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="js/supabase-client.js" defer></script>
+    
     <!-- Custom JS -->
+    <script src="js/sitedata.js" defer></script>
     <script src="js/main.js" defer></script>
 </head>
 <body>
@@ -73,7 +78,7 @@
             
             <div class="about-grid">
                 <div class="about-image glass-panel">
-                    <img src="assets/images/avatar.png" alt="Nandani Graphicano - Creative Professional">
+                    <img id="about-profile-img" src="assets/images/avatar.png" alt="Nandani Graphicano - Creative Professional">
                 </div>
                 <div class="about-text">
                     <h3>Hello, I'm Nandani.</h3>
@@ -118,37 +123,8 @@
             <h2 class="section-title">Premium Services</h2>
             <p class="section-subtitle">Comprehensive design solutions tailored for high-end brands.</p>
             
-            <div class="services-grid">
-                <div class="service-card glass-panel">
-                    <i class="fa-solid fa-pen-nib"></i>
-                    <h3>Logo Design</h3>
-                    <p>Memorable, minimalist, and powerful marks that define your brand's core essence.</p>
-                </div>
-                <div class="service-card glass-panel">
-                    <i class="fa-solid fa-briefcase"></i>
-                    <h3>Branding</h3>
-                    <p>Complete visual identity systems including color palettes, typography, and guidelines.</p>
-                </div>
-                <div class="service-card glass-panel">
-                    <i class="fa-brands fa-instagram"></i>
-                    <h3>Social Media</h3>
-                    <p>Engaging posts, stories, and carousels designed to boost your online presence.</p>
-                </div>
-                <div class="service-card glass-panel">
-                    <i class="fa-solid fa-image"></i>
-                    <h3>Thumbnail Design</h3>
-                    <p>High-click-through-rate YouTube thumbnails with striking typography and effects.</p>
-                </div>
-                <div class="service-card glass-panel">
-                    <i class="fa-solid fa-scroll"></i>
-                    <h3>Poster Design</h3>
-                    <p>Cinematic and impactful event posters, promotional flyers, and digital artwork.</p>
-                </div>
-                <div class="service-card glass-panel">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <h3>Creative Templates</h3>
-                    <p>Custom, reusable design templates for your business communications.</p>
-                </div>
+            <div class="services-grid" id="dynamic-services-grid">
+                <!-- Services will be injected here by sitedata.js -->
             </div>
         </div>
     </section>
@@ -173,69 +149,15 @@
         </div>
     </section>
 
-    <!-- Section 4: Portfolio -->
+    <!-- Section 4: Portfolio / Projects -->
     <section id="portfolio" class="portfolio" style="position: relative; overflow: hidden;">
         <div class="font-hatch" style="position: absolute; top: 10%; left: -5%; font-size: 20rem; color: rgba(45, 51, 47, 0.04); z-index: 0; line-height: 1; pointer-events: none;">03</div>
         <div class="container" style="position: relative; z-index: 1;">
-            <h2 class="section-title">The Showcase</h2>
-            <p class="section-subtitle">A curated collection of my finest visual creations.</p>
-            
-            <div class="portfolio-filter">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="logos">Logos</button>
-                <button class="filter-btn" data-filter="branding">Branding</button>
-                <button class="filter-btn" data-filter="social">Social Media</button>
-            </div>
+            <h2 class="section-title">Design Work</h2>
+            <p class="section-subtitle">Selected projects — brand identities, packaging, and visual systems crafted to make brands unforgettable.</p>
 
-            <div class="portfolio-grid">
-                <!-- Portfolio Item 1 -->
-                <div class="portfolio-item" data-category="logos">
-                    <img src="assets/images/portfolio/logo-1.png" alt="Luxury Logo Design">
-                    <div class="portfolio-overlay">
-                        <h4>Aura Luxe</h4>
-                        <p>Logo Design</p>
-                    </div>
-                </div>
-                <!-- Portfolio Item 2 -->
-                <div class="portfolio-item" data-category="social">
-                    <img src="assets/images/portfolio/social-1.png" alt="Social Media Post">
-                    <div class="portfolio-overlay">
-                        <h4>Neon Nights</h4>
-                        <p>Social Media</p>
-                    </div>
-                </div>
-                <!-- Portfolio Item 3 -->
-                <div class="portfolio-item" data-category="branding">
-                    <img src="assets/images/portfolio/branding-1.png" alt="Brand Identity">
-                    <div class="portfolio-overlay">
-                        <h4>Eclipse Studio</h4>
-                        <p>Branding</p>
-                    </div>
-                </div>
-                <!-- Portfolio Item 4 -->
-                <div class="portfolio-item" data-category="social">
-                    <img src="assets/images/portfolio/social-2.png" alt="Social Media Carousel">
-                    <div class="portfolio-overlay">
-                        <h4>Cyber Launch</h4>
-                        <p>Social Media</p>
-                    </div>
-                </div>
-                <!-- Portfolio Item 5 -->
-                <div class="portfolio-item" data-category="logos">
-                    <img src="assets/images/portfolio/logo-2.png" alt="Minimalist Logo">
-                    <div class="portfolio-overlay">
-                        <h4>Quantum Core</h4>
-                        <p>Logo Design</p>
-                    </div>
-                </div>
-                <!-- Portfolio Item 6 -->
-                <div class="portfolio-item" data-category="branding">
-                    <img src="assets/images/portfolio/business-1.png" alt="Business Cards">
-                    <div class="portfolio-overlay">
-                        <h4>Golden Elite</h4>
-                        <p>Branding Collateral</p>
-                    </div>
-                </div>
+            <div class="projects-grid" id="dynamic-projects-grid">
+                <!-- Projects will be injected here by sitedata.js -->
             </div>
         </div>
     </section>
@@ -318,29 +240,8 @@
             <h2 class="section-title">Client Praise</h2>
             <p class="section-subtitle">What others say about the Nandani Graphicano experience.</p>
             
-            <div class="testimonials-slider">
-                <div class="testimonial-card glass-panel">
-                    <i class="fa-solid fa-quote-left quote-icon"></i>
-                    <p>"Nandani transformed our brand entirely. The dark, luxurious aesthetic she created elevated our market presence immediately. Highly recommended!"</p>
-                    <div class="client-info">
-                        <div class="client-avatar" style="width:50px; height:50px; background:var(--color-primary-gradient); border-radius:50%;"></div>
-                        <div>
-                            <h4 style="font-family: var(--font-heading);">Sarah Jenkins</h4>
-                            <p style="color: var(--color-accent-gold); font-size: 0.8rem;">CEO, LuxeTech</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card glass-panel">
-                    <i class="fa-solid fa-quote-left quote-icon"></i>
-                    <p>"The thumbnails designed for my channel increased my CTR by 40%. The glowing effects and typography are just perfectly executed."</p>
-                    <div class="client-info">
-                        <div class="client-avatar" style="width:50px; height:50px; background:var(--color-primary-gradient); border-radius:50%;"></div>
-                        <div>
-                            <h4 style="font-family: var(--font-heading);">Mark D.</h4>
-                            <p style="color: var(--color-accent-gold); font-size: 0.8rem;">Content Creator</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="testimonials-grid" id="dynamic-testimonials-grid">
+                <!-- Testimonials will be injected here by sitedata.js -->
             </div>
         </div>
     </section>
@@ -388,11 +289,6 @@
         </div>
     </footer>
 
-    <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
-        <span class="lightbox-close" style="position: absolute; top: 30px; right: 40px; color: #fff; font-size: 40px; cursor: pointer;">&times;</span>
-        <img class="lightbox-img" src="" alt="Portfolio Image" style="max-width: 90%; max-height: 90vh; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);">
-    </div>
 
     <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/919343407099" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp">

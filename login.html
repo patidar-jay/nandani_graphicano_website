@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Nandani Graphicano</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg: #F8F6F2;
+            --card: #FFFFFF;
+            --border: #E8E3DA;
+            --accent: #E2725B;
+            --text: #2D332F;
+            --muted: #8A8880;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: var(--bg);
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text);
+        }
+        .login-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .login-card h2 {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 1.8rem;
+        }
+        .login-card p {
+            color: var(--muted);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(226, 114, 91, 0.1);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            background: #C85A45;
+            box-shadow: 0 8px 20px rgba(226, 114, 91, 0.25);
+        }
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+        .links a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .links a:hover {
+            color: var(--accent);
+        }
+        .error-msg {
+            color: #ff4d4d;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        .success-msg {
+            color: #4CAF50;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card" id="loginCard">
+        <h2>Admin Login</h2>
+        <p id="subtitle">Sign in to manage your portfolio</p>
+        
+        <div id="errorMsg" class="error-msg">Invalid credentials.</div>
+        <div id="successMsg" class="success-msg">Reset link sent to your email!</div>
+        
+        <div class="form-group" id="emailGroup">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="emailInput" class="form-input" placeholder="admin@example.com" required>
+        </div>
+        
+        <div class="form-group" id="passwordGroup">
+            <label class="form-label">Password</label>
+            <input type="password" id="passwordInput" class="form-input" placeholder="••••••••" required>
+        </div>
+        
+        <button class="btn-login" id="mainBtn" onclick="handleLogin()">Sign In</button>
+        
+        <div class="links" id="linksContainer">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Site</a>
+            <a onclick="toggleForgotPassword()">Forgot Password?</a>
+        </div>
+    </div>
+
+    <!-- Supabase Client Setup -->
+    <script src="js/supabase-client.js"></script>
+    <script>
+        let isForgotPassword = false;
+
+        function toggleForgotPassword() {
+            isForgotPassword = !isForgotPassword;
+            
+            const subtitle = document.getElementById('subtitle');
+            const passwordGroup = document.getElementById('passwordGroup');
+            const mainBtn = document.getElementById('mainBtn');
+            const linksContainer = document.getElementById('linksContainer');
+            
+            document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'none';
+
+            if (isForgotPassword) {
+                subtitle.textContent = "Enter your email to receive a reset link";
+                passwordGroup.style.display = 'none';
+                mainBtn.textContent = "Send Reset Link";
+                mainBtn.onclick = handleResetPassword;
+                linksContainer.innerHTML = `
+                    <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Site</a>
+                    <a onclick="toggleForgotPassword()">Back to Login</a>
+                `;
+            } else {
+                subtitle.textContent = "Sign in to manage your portfolio";
+                passwordGroup.style.display = 'block';
+                mainBtn.textContent = "Sign In";
+                mainBtn.onclick = handleLogin;
+                linksContainer.innerHTML = `
+                    <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Site</a>
+                    <a onclick="toggleForgotPassword()">Forgot Password?</a>
+                `;
+            }
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const mainBtn = document.getElementById('mainBtn');
+
+            if (!email || !password) {
+                errorMsg.textContent = "Please fill in both fields.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            mainBtn.disabled = true;
+            mainBtn.textContent = "Signing In...";
+            errorMsg.style.display = 'none';
+
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) {
+                    errorMsg.textContent = error.message;
+                    errorMsg.style.display = 'block';
+                    mainBtn.disabled = false;
+                    mainBtn.textContent = "Sign In";
+                } else {
+                    window.location.href = 'admin.html';
+                }
+            } catch (err) {
+                errorMsg.textContent = err.message || "An error occurred during login.";
+                errorMsg.style.display = 'block';
+                mainBtn.disabled = false;
+                mainBtn.textContent = "Sign In";
+            }
+        }
+
+        async function handleResetPassword() {
+            const email = document.getElementById('emailInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+            const mainBtn = document.getElementById('mainBtn');
+
+            if (!email) {
+                errorMsg.textContent = "Please enter your email.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            mainBtn.disabled = true;
+            mainBtn.textContent = "Sending...";
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            try {
+                const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/admin.html',
+                });
+
+                if (error) {
+                    errorMsg.textContent = error.message;
+                    errorMsg.style.display = 'block';
+                    mainBtn.disabled = false;
+                    mainBtn.textContent = "Send Reset Link";
+                } else {
+                    successMsg.style.display = 'block';
+                    mainBtn.disabled = false;
+                    mainBtn.textContent = "Send Reset Link";
+                }
+            } catch (err) {
+                errorMsg.textContent = err.message || "An error occurred.";
+                errorMsg.style.display = 'block';
+                mainBtn.disabled = false;
+                mainBtn.textContent = "Send Reset Link";
+            }
+        }
+
+        // Check if already logged in
+        window.onload = async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                window.location.href = 'admin.html';
+            }
+        };
+    </script>
+</body>
+</html>

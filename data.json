@@ -1,0 +1,79 @@
+{
+    "hero": {
+        "line1": "Creative",
+        "line2": "Graphic Designer",
+        "subtitle": "Logos, Branding, Social Media Designs & Creative Visual Experiences.",
+        "cta1": "View Portfolio",
+        "cta2": "Hire Me"
+    },
+    "projects": [
+        {
+            "id": "p1",
+            "image": "assets/images/portfolio/advatika 1.jpeg",
+            "name": "Advaita Agronics",
+            "tags": "Brand Strategy, Packaging",
+            "status": "Live",
+            "link": "projects/advaita.html"
+        },
+        {
+            "id": "p2",
+            "image": "assets/images/portfolio/logo-1.png",
+            "name": "Aura Luxe",
+            "tags": "Logo Design, Brand Mark",
+            "status": "Live",
+            "link": "#"
+        },
+        {
+            "id": "p3",
+            "image": "assets/images/portfolio/branding-1.png",
+            "name": "Eclipse Studio",
+            "tags": "Visual Identity, Guidelines",
+            "status": "Live",
+            "link": "#"
+        }
+    ],
+    "services": [
+        {
+            "icon": "fa-solid fa-pen-nib",
+            "name": "Logo Design",
+            "desc": "Memorable, minimalist, and powerful marks that define your brand's core essence."
+        },
+        {
+            "icon": "fa-solid fa-briefcase",
+            "name": "Branding",
+            "desc": "Complete visual identity systems including color palettes, typography, and guidelines."
+        },
+        {
+            "icon": "fa-brands fa-instagram",
+            "name": "Social Media",
+            "desc": "Engaging posts, stories, and carousels designed to boost your online presence."
+        },
+        {
+            "icon": "fa-solid fa-image",
+            "name": "Thumbnail Design",
+            "desc": "High-click-through-rate YouTube thumbnails with striking typography and effects."
+        },
+        {
+            "icon": "fa-solid fa-scroll",
+            "name": "Poster Design",
+            "desc": "Cinematic and impactful event posters, promotional flyers, and digital artwork."
+        },
+        {
+            "icon": "fa-solid fa-layer-group",
+            "name": "Creative Templates",
+            "desc": "Custom, reusable design templates for your business communications."
+        }
+    ],
+    "testimonials": [
+        {
+            "name": "Sarah Jenkins",
+            "role": "CEO, LuxeTech",
+            "quote": "\"Nandani transformed our brand entirely. The dark, luxurious aesthetic she created elevated our market presence immediately. Highly recommended!\""
+        },
+        {
+            "name": "Mark D.",
+            "role": "Content Creator",
+            "quote": "\"The thumbnails designed for my channel increased my CTR by 40%. The glowing effects and typography are just perfectly executed.\""
+        }
+    ]
+}

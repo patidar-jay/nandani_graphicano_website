@@ -119,16 +119,16 @@ gsap.from('.service-card', {
     ease: 'power2.out'
 });
 
-// Portfolio Grid
-gsap.from('.portfolio-item', {
+// Portfolio / Project Cards
+gsap.from('.project-card', {
     scrollTrigger: {
         trigger: '#portfolio',
         start: 'top 70%',
     },
     opacity: 0,
-    scale: 0.9,
-    stagger: 0.1,
-    duration: 0.8,
+    y: 60,
+    stagger: 0.15,
+    duration: 0.9,
     ease: 'power2.out'
 });
 
@@ -173,69 +173,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Portfolio Filtering (Basic implementation)
-const filterBtns = document.querySelectorAll('.filter-btn');
-const portfolioItems = document.querySelectorAll('.portfolio-item');
-
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Remove active class from all buttons
-        filterBtns.forEach(b => b.classList.remove('active'));
-        // Add active class to clicked button
-        btn.classList.add('active');
-        
-        const filterValue = btn.getAttribute('data-filter');
-        
-        portfolioItems.forEach(item => {
-            if(filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                item.style.display = 'block';
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                    item.style.transform = 'scale(1)';
-                }, 50);
-            } else {
-                item.style.opacity = '0';
-                item.style.transform = 'scale(0.8)';
-                setTimeout(() => {
-                    item.style.display = 'none';
-                }, 400); // Matches CSS transition duration
-            }
-        });
-    });
-});
-
-// Lightbox Implementation
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.querySelector('.lightbox-img');
-const lightboxClose = document.querySelector('.lightbox-close');
-
-document.querySelectorAll('.portfolio-item').forEach(item => {
-    item.style.cursor = 'pointer';
-    item.addEventListener('click', () => {
-        const imgSrc = item.querySelector('img').src;
-        lightboxImg.src = imgSrc;
-        lightbox.style.display = 'flex';
-        setTimeout(() => {
-            lightbox.style.opacity = '1';
-        }, 10);
-    });
-});
-
-const closeLightbox = () => {
-    lightbox.style.opacity = '0';
-    setTimeout(() => {
-        lightbox.style.display = 'none';
-    }, 300);
-};
-
-if(lightboxClose) {
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (e) => {
-        if (e.target !== lightboxImg) closeLightbox();
-    });
-}
-
-// Impact Stats Counter
 const statsSection = document.getElementById('stats');
 let counted = false;
 

@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Nandani Graphicano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg: #F8F6F2;
+            --card: #FFFFFF;
+            --border: #E8E3DA;
+            --accent: #E2725B;
+            --accent-light: rgba(226, 114, 91, 0.08);
+            --text: #2D332F;
+            --muted: #8A8880;
+            --success: #4CAF50;
+            --radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        /* ── SIDEBAR ──────────────────────────────── */
+        .admin-layout { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 260px; background: var(--card); border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem; display: flex; flex-direction: column; position: fixed;
+            top: 0; left: 0; height: 100vh; z-index: 100;
+        }
+
+        .sidebar-logo {
+            font-size: 1.3rem; font-weight: 700; color: var(--text);
+            margin-bottom: 0.3rem; text-decoration: none;
+        }
+        .sidebar-logo span { color: var(--accent); }
+        .sidebar-sub { font-size: 0.75rem; color: var(--muted); margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .sidebar-nav { list-style: none; flex: 1; }
+        .sidebar-nav li { margin-bottom: 0.3rem; }
+        .sidebar-nav a {
+            display: flex; align-items: center; gap: 0.8rem; padding: 0.75rem 1rem;
+            border-radius: 10px; text-decoration: none; color: var(--muted);
+            font-size: 0.9rem; font-weight: 500; transition: all 0.2s;
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: var(--accent-light); color: var(--accent);
+        }
+        .sidebar-nav a i { width: 18px; text-align: center; }
+
+        .sidebar-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; }
+        .sidebar-bottom a {
+            display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 1rem;
+            text-decoration: none; color: var(--muted); font-size: 0.85rem; border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .sidebar-bottom a:hover { background: var(--accent-light); color: var(--accent); }
+
+        /* ── MAIN CONTENT ─────────────────────────── */
+        .admin-main { flex: 1; margin-left: 260px; padding: 2rem 3rem; }
+
+        .admin-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+        }
+        .admin-header h1 { font-size: 1.6rem; font-weight: 700; }
+        .admin-header .admin-user {
+            display: flex; align-items: center; gap: 0.8rem; font-size: 0.9rem; color: var(--muted);
+        }
+        .admin-avatar {
+            width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), #C85A45);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 700; font-size: 0.85rem;
+        }
+
+        /* ── STATS CARDS ──────────────────────────── */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 1.5rem; transition: all 0.3s;
+        }
+        .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(226,114,91,0.08); }
+        .stat-card-icon {
+            width: 40px; height: 40px; border-radius: 10px; background: var(--accent-light);
+            display: flex; align-items: center; justify-content: center; color: var(--accent);
+            margin-bottom: 1rem; font-size: 1rem;
+        }
+        .stat-card h3 { font-size: 1.8rem; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 0.2rem; }
+        .stat-card p { font-size: 0.8rem; color: var(--muted); }
+
+        /* ── SECTIONS ─────────────────────────────── */
+        .admin-section {
+            background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 2rem; margin-bottom: 2rem;
+        }
+        .admin-section-head {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+        }
+        .admin-section-head h2 { font-size: 1.1rem; font-weight: 700; }
+
+        /* Buttons */
+        .btn-admin {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.2rem; border-radius: 10px; border: none;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            font-family: 'Inter', sans-serif; text-decoration: none;
+        }
+        .btn-accent { background: var(--accent); color: #fff; }
+        .btn-accent:hover { background: #C85A45; transform: translateY(-1px); }
+        .btn-outline-admin { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline-admin:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+
+        /* ── FORM ELEMENTS ────────────────────────── */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input {
+            width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--border); border-radius: 10px;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text);
+            background: var(--bg); transition: all 0.2s; outline: none;
+        }
+        .form-input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(226,114,91,0.08); }
+        textarea.form-input { min-height: 100px; resize: vertical; }
+        select.form-input { -webkit-appearance: none; cursor: pointer; }
+
+        /* ── TABLE ─────────────────────────────────── */
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th {
+            text-align: left; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--muted); padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border); font-weight: 600;
+        }
+        .admin-table td {
+            padding: 1rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; vertical-align: middle;
+        }
+        .admin-table tr:hover td { background: rgba(226,114,91,0.02); }
+        .admin-table .thumb { width: 60px; height: 45px; border-radius: 8px; object-fit: cover; }
+        .status-badge {
+            display: inline-block; padding: 0.25rem 0.7rem; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+        .status-live { background: rgba(76,175,80,0.1); color: #2e7d32; }
+        .status-draft { background: rgba(255,152,0,0.1); color: #e65100; }
+        .action-btns { display: flex; gap: 0.5rem; }
+        .action-btn {
+            width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+            background: transparent; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-size: 0.8rem; color: var(--muted); transition: all 0.2s;
+        }
+        .action-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+        .action-btn.delete:hover { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,0.05); }
+
+        /* ── MODAL ─────────────────────────────────── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000;
+            display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--card); border-radius: var(--radius); padding: 2rem;
+            max-width: 600px; width: 90%; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-head h3 { font-size: 1.2rem; font-weight: 700; }
+        .modal-close { background: none; border: none; font-size: 1.2rem; color: var(--muted); cursor: pointer; }
+        .modal-actions { display: flex; gap: 0.8rem; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+        /* ── TOAST ──────────────────────────────────── */
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; background: var(--success); color: #fff;
+            padding: 1rem 1.5rem; border-radius: 12px; font-size: 0.9rem; font-weight: 600;
+            display: none; align-items: center; gap: 0.6rem; z-index: 2000;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15); animation: slideUp 0.3s ease;
+        }
+        .toast.show { display: flex; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* ── HIDDEN PANELS ─────────────────────────── */
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* ── RESPONSIVE ────────────────────────────── */
+        @media (max-width: 1024px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .admin-main { margin-left: 0; padding: 1.5rem; }
+            .stats-row { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="admin-body">
+
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-logo">Nandani<span>.</span></a>
+        <p class="sidebar-sub">Admin Panel</p>
+        <ul class="sidebar-nav">
+            <li><a href="#" class="active" data-panel="dashboard" onclick="switchPanel('dashboard', this)"><i class="fa-solid fa-grid-2"></i> Dashboard</a></li>
+            <li><a href="#" data-panel="hero" onclick="switchPanel('hero', this)"><i class="fa-solid fa-image"></i> Hero Section</a></li>
+            <li><a href="#" data-panel="about" onclick="switchPanel('about', this)"><i class="fa-solid fa-user"></i> About</a></li>
+            <li><a href="#" data-panel="services" onclick="switchPanel('services', this)"><i class="fa-solid fa-briefcase"></i> Services</a></li>
+            <li><a href="#" data-panel="projects" onclick="switchPanel('projects', this)"><i class="fa-solid fa-folder-open"></i> Projects</a></li>
+            <li><a href="#" data-panel="testimonials" onclick="switchPanel('testimonials', this)"><i class="fa-solid fa-quote-left"></i> Testimonials</a></li>
+            <li><a href="#" data-panel="contact" onclick="switchPanel('contact', this)"><i class="fa-solid fa-envelope"></i> Contact Info</a></li>
+            <li><a href="#" data-panel="settings" onclick="switchPanel('settings', this)"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        </ul>
+        <div class="sidebar-bottom">
+            <a href="index.html" target="_blank"><i class="fa-solid fa-external-link"></i> View Live Site</a>
+            <a href="#" onclick="handleLogout()" style="color:var(--accent);"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+        <!-- Header -->
+        <div class="admin-header">
+            <h1 id="pageTitle">Dashboard</h1>
+            <div class="admin-user">
+                <span>Nandani</span>
+                <div class="admin-avatar">N</div>
+            </div>
+        </div>
+
+        <!-- ═══ DASHBOARD PANEL ═══════════════════ -->
+        <div class="panel active" id="panel-dashboard">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-card-icon"><i class="fa-solid fa-folder-open"></i></div>
+                    <h3>6</h3>
+                    <p>Total Projects</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3>6</h3>
+                    <p>Services Listed</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon"><i class="fa-solid fa-quote-left"></i></div>
+                    <h3>2</h3>
+                    <p>Testimonials</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon"><i class="fa-solid fa-eye"></i></div>
+                    <h3>Live</h3>
+                    <p>Site Status</p>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>Quick Actions</h2>
+                </div>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn-admin btn-accent" onclick="switchPanel('projects', document.querySelector('[data-panel=projects]'))"><i class="fa-solid fa-plus"></i> Add New Project</button>
+                    <button class="btn-admin btn-outline-admin" onclick="switchPanel('hero', document.querySelector('[data-panel=hero]'))"><i class="fa-solid fa-pen"></i> Edit Hero Section</button>
+                    <button class="btn-admin btn-outline-admin" onclick="switchPanel('about', document.querySelector('[data-panel=about]'))"><i class="fa-solid fa-user-pen"></i> Update About</button>
+                    <a href="index.html" target="_blank" class="btn-admin btn-outline-admin"><i class="fa-solid fa-external-link"></i> Preview Site</a>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>All Projects</h2>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr><th>Image</th><th>Project</th><th>Category</th><th>Status</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="assets/images/portfolio/advatika 1.jpeg" class="thumb" alt=""></td>
+                            <td><strong>Advaita Agronics</strong></td>
+                            <td>Branding & Packaging</td>
+                            <td><span class="status-badge status-live">Live</span></td>
+                            <td><div class="action-btns">
+                                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
+                                <button class="action-btn delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                            </div></td>
+                        </tr>
+                        <tr>
+                            <td><img src="assets/images/portfolio/logo-1.png" class="thumb" alt=""></td>
+                            <td><strong>Aura Luxe</strong></td>
+                            <td>Logo Design</td>
+                            <td><span class="status-badge status-live">Live</span></td>
+                            <td><div class="action-btns">
+                                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
+                                <button class="action-btn delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                            </div></td>
+                        </tr>
+                        <tr>
+                            <td><img src="assets/images/portfolio/branding-1.png" class="thumb" alt=""></td>
+                            <td><strong>Eclipse Studio</strong></td>
+                            <td>Brand Identity</td>
+                            <td><span class="status-badge status-live">Live</span></td>
+                            <td><div class="action-btns">
+                                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
+                                <button class="action-btn delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                            </div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══ HERO PANEL ════════════════════════ -->
+        <div class="panel" id="panel-hero">
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>Edit Hero Section</h2>
+                    <button class="btn-admin btn-accent" onclick="saveSection('hero')"><i class="fa-solid fa-check"></i> Save Changes</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Headline (Line 1)</label>
+                    <input type="text" class="form-input" value="Creative" id="heroLine1">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Headline (Line 2)</label>
+                    <input type="text" class="form-input" value="Graphic Designer" id="heroLine2">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subtitle</label>
+                    <input type="text" class="form-input" value="Logos, Branding, Social Media Designs & Creative Visual Experiences." id="heroSubtitle">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">CTA Button 1 Text</label>
+                        <input type="text" class="form-input" value="View Portfolio" id="heroCta1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CTA Button 2 Text</label>
+                        <input type="text" class="form-input" value="Hire Me" id="heroCta2">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ ABOUT PANEL ═══════════════════════ -->
+        <div class="panel" id="panel-about">
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>Edit About Section</h2>
+                    <button class="btn-admin btn-accent" onclick="saveSection('about')"><i class="fa-solid fa-check"></i> Save Changes</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" class="form-input" value="The Brand Story" id="aboutTitle">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Greeting</label>
+                    <input type="text" class="form-input" value="Hello, I'm Nandani." id="aboutGreeting">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Paragraph 1</label>
+                    <textarea class="form-input" id="aboutP1">I am a high-tier freelance visual identity expert dedicated to transforming your brand's vision into a stunning visual reality. With a deep passion for modern aesthetics and premium design, I specialize in creating designs that not only look beautiful but also communicate effectively.</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Paragraph 2</label>
+                    <textarea class="form-input" id="aboutP2">My expertise spans across Logo Design, Comprehensive Branding, Social Media Creatives, Thumbnails, Posters, and bespoke Creative Visual Identities. Let's build a brand that stands out in the digital landscape.</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Profile Image</label>
+                    <input type="file" class="form-input" accept="image/*" id="aboutProfileUpload">
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ SERVICES PANEL ════════════════════ -->
+        <div class="panel" id="panel-services">
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>Manage Services</h2>
+                    <button class="btn-admin btn-accent" onclick="saveSection('services')"><i class="fa-solid fa-check"></i> Save All</button>
+                </div>
+                <table class="admin-table">
+                    <thead><tr><th>Icon</th><th>Service Name</th><th>Description</th><th>Actions</th></tr></thead>
+                    <tbody id="admin-services-table">
+                        <!-- Rendered by JS -->
+                    </tbody>
+                </table>
+                <div style="margin-top:1rem;"><button class="btn-admin btn-outline-admin" onclick="openModal('services')"><i class="fa-solid fa-plus"></i> Add Service</button></div>
+            </div>
+        </div>
+
+        <!-- ═══ PROJECTS PANEL ════════════════════ -->
+        <div class="panel" id="panel-projects">
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>Manage Projects</h2>
+                    <button class="btn-admin btn-accent" onclick="openModal('projects')"><i class="fa-solid fa-plus"></i> Add Project</button>
+                </div>
+                <table class="admin-table">
+                    <thead><tr><th>Image</th><th>Project Name</th><th>Tags</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="admin-projects-table">
+                        <!-- Rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══ TESTIMONIALS PANEL ════════════════ -->
+        <div class="panel" id="panel-testimonials">
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>Manage Testimonials</h2>
+                    <button class="btn-admin btn-accent" onclick="openModal('testimonials')"><i class="fa-solid fa-plus"></i> Add Testimonial</button>
+                </div>
+                <table class="admin-table">
+                    <thead><tr><th>Client</th><th>Role</th><th>Quote</th><th>Actions</th></tr></thead>
+                    <tbody id="admin-testimonials-table">
+                        <!-- Rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══ CONTACT PANEL ═════════════════════ -->
+        <div class="panel" id="panel-contact">
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>Contact Information</h2>
+                    <button class="btn-admin btn-accent" onclick="saveSection('contact')"><i class="fa-solid fa-check"></i> Save Changes</button>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">WhatsApp Number</label>
+                        <input type="text" class="form-input" value="+91 9343407099" id="contactWA">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" value="hello@nandanigraphicano.com" id="contactEmail">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Instagram Handle</label>
+                        <input type="text" class="form-input" value="@nandani_graphicano" id="contactIG">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Behance URL</label>
+                        <input type="url" class="form-input" value="" placeholder="https://behance.net/..." id="contactBehance">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Dribbble URL</label>
+                        <input type="url" class="form-input" value="" placeholder="https://dribbble.com/..." id="contactDribbble">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">LinkedIn URL</label>
+                        <input type="url" class="form-input" value="" placeholder="https://linkedin.com/..." id="contactLinkedIn">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ SETTINGS PANEL ════════════════════ -->
+        <div class="panel" id="panel-settings">
+            <div class="admin-section">
+                <div class="admin-section-head">
+                    <h2>Site Settings</h2>
+                    <button class="btn-admin btn-accent" onclick="saveSection('settings')"><i class="fa-solid fa-check"></i> Save Changes</button>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Site Title</label>
+                        <input type="text" class="form-input" value="Nandani Graphicano | Premium Graphic Design Studio" id="siteTitle">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Logo Text</label>
+                        <input type="text" class="form-input" value="Nandani." id="siteLogo">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Meta Description</label>
+                    <textarea class="form-input" id="siteMeta">Nandani Graphicano - High-end freelance graphic designer specializing in logos, branding, and social media designs.</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Accent Color</label>
+                        <input type="color" class="form-input" value="#E2725B" style="height:42px;padding:4px;" id="siteColor">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Copyright Year</label>
+                        <input type="text" class="form-input" value="2026" id="siteYear">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+    <div class="modal">
+        <div class="modal-head">
+            <h3 id="modalTitle">Add New Item</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="modalBody">
+            <!-- Dynamically populated -->
+        </div>
+        <div class="modal-actions">
+            <button class="btn-admin btn-outline-admin" onclick="closeModal()">Cancel</button>
+            <button class="btn-admin btn-accent" id="modalSaveBtn">Save Item</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Saved!</span></div>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/sitedata.js"></script>
+<script>
+    // Authentication Check
+    async function checkAuth() {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+        }
+    }
+    
+    async function handleLogout() {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'login.html';
+    }
+
+    // Panel Switching
+    function switchPanel(name, el) {
+        event.preventDefault();
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('panel-' + name).classList.add('active');
+        document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+        if (el) el.classList.add('active');
+        const titles = { dashboard:'Dashboard', hero:'Hero Section', about:'About Section', services:'Services', projects:'Projects', testimonials:'Testimonials', contact:'Contact Info', settings:'Settings' };
+        document.getElementById('pageTitle').textContent = titles[name] || name;
+    }
+
+    // Toast
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Populate forms and tables from SiteData
+    function loadAdminData() {
+        const data = SiteData.getAll();
+        
+        // Hero
+        document.getElementById('heroLine1').value = data.hero.line1 || '';
+        document.getElementById('heroLine2').value = data.hero.line2 || '';
+        document.getElementById('heroSubtitle').value = data.hero.subtitle || '';
+        document.getElementById('heroCta1').value = data.hero.cta1 || '';
+        document.getElementById('heroCta2').value = data.hero.cta2 || '';
+        
+        // About
+        document.getElementById('aboutTitle').value = data.about.title || '';
+        document.getElementById('aboutGreeting').value = data.about.greeting || '';
+        document.getElementById('aboutP1').value = data.about.p1 || '';
+        document.getElementById('aboutP2').value = data.about.p2 || '';
+        
+        // Contact
+        document.getElementById('contactWA').value = data.contact.whatsapp || '';
+        document.getElementById('contactEmail').value = data.contact.email || '';
+        document.getElementById('contactIG').value = data.contact.instagram || '';
+        document.getElementById('contactBehance').value = data.contact.behance || '';
+        document.getElementById('contactDribbble').value = data.contact.dribbble || '';
+        document.getElementById('contactLinkedIn').value = data.contact.linkedin || '';
+        
+        // Settings
+        document.getElementById('siteTitle').value = data.settings.siteTitle || '';
+        document.getElementById('siteLogo').value = data.settings.logo || '';
+        document.getElementById('siteMeta').value = data.settings.meta || '';
+        document.getElementById('siteColor').value = data.settings.accentColor || '#E2725B';
+        document.getElementById('siteYear').value = data.settings.year || '';
+
+        renderAdminTables(data);
+    }
+
+    // Render Dynamic Tables
+    function renderAdminTables(data) {
+        // Services
+        const sTbody = document.getElementById('admin-services-table');
+        if (sTbody) {
+            sTbody.innerHTML = (data.services || []).map((s, i) => `
+                <tr>
+                    <td><i class="${s.icon}" style="color:var(--accent);font-size:1.2rem;"></i></td>
+                    <td>${s.name}</td>
+                    <td>${s.desc.substring(0, 40)}...</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn" onclick="moveItem('services', ${i}, -1)" ${i === 0 ? 'disabled style="opacity:0.3"' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                            <button class="action-btn" onclick="moveItem('services', ${i}, 1)" ${i === (data.services.length - 1) ? 'disabled style="opacity:0.3"' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="action-btn" onclick="openModal('services', ${i})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="action-btn delete" onclick="deleteItem('services', ${i})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Projects
+        const pTbody = document.getElementById('admin-projects-table');
+        const dashPtbody = document.getElementById('admin-dash-projects');
+        const projHtml = (data.projects || []).map((p, i) => `
+            <tr>
+                <td><img src="${p.image}" class="thumb" alt=""></td>
+                <td><strong>${p.name}</strong></td>
+                <td>${(p.tags || '').split(',').map(t => '<span class="status-badge status-live" style="margin-right:4px;">'+t.trim()+'</span>').join('')}</td>
+                <td><span class="status-badge status-${p.status === 'Live' ? 'live' : 'draft'}">${p.status}</span></td>
+                <td>
+                    <div class="action-btns">
+                        <button class="action-btn" onclick="moveItem('projects', ${i}, -1)" ${i === 0 ? 'disabled style="opacity:0.3"' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                        <button class="action-btn" onclick="moveItem('projects', ${i}, 1)" ${i === (data.projects.length - 1) ? 'disabled style="opacity:0.3"' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                        <button class="action-btn" onclick="openModal('projects', ${i})"><i class="fa-solid fa-pen"></i></button>
+                        <button class="action-btn delete" onclick="deleteItem('projects', ${i})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+        
+        if (pTbody) pTbody.innerHTML = projHtml;
+        if (dashPtbody) dashPtbody.innerHTML = projHtml;
+
+        // Testimonials
+        const tTbody = document.getElementById('admin-testimonials-table');
+        if (tTbody) {
+            tTbody.innerHTML = (data.testimonials || []).map((t, i) => `
+                <tr>
+                    <td><strong>${t.name}</strong></td>
+                    <td>${t.role}</td>
+                    <td style="max-width:300px;color:var(--muted);font-size:0.85rem;">"${t.quote.substring(0, 40)}..."</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn" onclick="moveItem('testimonials', ${i}, -1)" ${i === 0 ? 'disabled style="opacity:0.3"' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                            <button class="action-btn" onclick="moveItem('testimonials', ${i}, 1)" ${i === (data.testimonials.length - 1) ? 'disabled style="opacity:0.3"' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="action-btn" onclick="openModal('testimonials', ${i})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="action-btn delete" onclick="deleteItem('testimonials', ${i})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    }
+
+    // Modal State
+    let currentModalType = null;
+    let currentModalIndex = -1;
+
+    // Open Modal
+    function openModal(type, index = -1) {
+        currentModalType = type;
+        currentModalIndex = index;
+        
+        const isEdit = index !== -1;
+        document.getElementById('modalTitle').textContent = isEdit ? 'Edit ' + type.slice(0, -1) : 'Add New ' + type.slice(0, -1);
+        
+        const data = SiteData.get(type) || [];
+        const item = isEdit ? data[index] : {};
+        const mBody = document.getElementById('modalBody');
+
+        if (type === 'services') {
+            mBody.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Service Name</label>
+                    <input type="text" id="mName" class="form-input" value="${item.name || ''}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea id="mDesc" class="form-input">${item.desc || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">FontAwesome Icon Class</label>
+                    <input type="text" id="mIcon" class="form-input" placeholder="fa-solid fa-pen-nib" value="${item.icon || ''}">
+                </div>
+            `;
+        } else if (type === 'projects') {
+            mBody.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Project Name</label>
+                    <input type="text" id="mName" class="form-input" value="${item.name || ''}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tags (comma separated)</label>
+                    <input type="text" id="mTags" class="form-input" placeholder="Branding, Logo..." value="${item.tags || ''}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Image URL / Upload</label>
+                    <div style="display:flex;gap:10px;">
+                        <input type="text" id="mImage" class="form-input" value="${item.image || ''}">
+                        <input type="file" id="mImageUpload" accept="image/*" style="display:none;" onchange="uploadImage(this, 'mImage')">
+                        <button class="btn-admin btn-outline-admin" onclick="document.getElementById('mImageUpload').click()">Upload</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Link URL (optional)</label>
+                    <input type="text" id="mLink" class="form-input" value="${item.link || '#'}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="mStatus" class="form-input">
+                        <option value="Live" ${item.status === 'Live' ? 'selected' : ''}>Live</option>
+                        <option value="Draft" ${item.status === 'Draft' ? 'selected' : ''}>Draft</option>
+                    </select>
+                </div>
+            `;
+        } else if (type === 'testimonials') {
+            mBody.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Client Name</label>
+                    <input type="text" id="mName" class="form-input" value="${item.name || ''}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Client Role / Company</label>
+                    <input type="text" id="mRole" class="form-input" value="${item.role || ''}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quote</label>
+                    <textarea id="mQuote" class="form-input">${item.quote || ''}</textarea>
+                </div>
+            `;
+        }
+
+        document.getElementById('modalSaveBtn').onclick = saveModalItem;
+        document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() { document.getElementById('modal').classList.remove('active'); }
+
+    // Upload Image Handler
+    async function uploadImage(input, targetInputId) {
+        if (!input.files || input.files.length === 0) return;
+        const file = input.files[0];
+        
+        try {
+            const ext = file.name.split('.').pop();
+            const fileName = `upload_${Date.now()}.${ext}`;
+            
+            const { data, error } = await supabaseClient.storage
+                .from('portfolio_images')
+                .upload(fileName, file);
+
+            if (error) {
+                alert('Upload failed: ' + error.message);
+                return;
+            }
+
+            const { data: publicUrlData } = supabaseClient.storage
+                .from('portfolio_images')
+                .getPublicUrl(fileName);
+
+            if (targetInputId) {
+                document.getElementById(targetInputId).value = publicUrlData.publicUrl;
+            } else {
+                showToast('Image uploaded successfully!');
+            }
+        } catch (e) {
+            alert('Upload error: ' + e);
+        }
+    }
+
+    // Save Modal Item
+    async function saveModalItem() {
+        const data = SiteData.get(currentModalType) || [];
+        let item = {};
+        
+        if (currentModalType === 'services') {
+            item = {
+                name: document.getElementById('mName').value,
+                desc: document.getElementById('mDesc').value,
+                icon: document.getElementById('mIcon').value
+            };
+        } else if (currentModalType === 'projects') {
+            item = {
+                name: document.getElementById('mName').value,
+                tags: document.getElementById('mTags').value,
+                image: document.getElementById('mImage').value,
+                link: document.getElementById('mLink').value,
+                status: document.getElementById('mStatus').value,
+                id: 'p' + Date.now()
+            };
+            if (currentModalIndex !== -1) item.id = data[currentModalIndex].id;
+        } else if (currentModalType === 'testimonials') {
+            item = {
+                name: document.getElementById('mName').value,
+                role: document.getElementById('mRole').value,
+                quote: document.getElementById('mQuote').value
+            };
+        }
+
+        if (currentModalIndex === -1) {
+            data.push(item);
+        } else {
+            data[currentModalIndex] = item;
+        }
+        
+        await SiteData.save(currentModalType, data);
+        renderAdminTables(SiteData.getAll());
+        closeModal();
+        showToast('Item saved successfully!');
+    }
+
+    // Delete Item
+    async function deleteItem(type, index) {
+        if (!confirm('Are you sure you want to delete this item?')) return;
+        const data = SiteData.get(type) || [];
+        data.splice(index, 1);
+        await SiteData.save(type, data);
+        renderAdminTables(SiteData.getAll());
+        showToast('Item deleted.');
+    }
+
+    // Move Item
+    async function moveItem(type, index, direction) {
+        const data = SiteData.get(type) || [];
+        const targetIndex = index + direction;
+        
+        if (targetIndex < 0 || targetIndex >= data.length) return; // Out of bounds
+        
+        // Swap items
+        const temp = data[index];
+        data[index] = data[targetIndex];
+        data[targetIndex] = temp;
+        
+        await SiteData.save(type, data);
+        renderAdminTables(SiteData.getAll());
+        showToast('Preference updated!');
+    }
+
+    // Save Section (Hero, About, Contact, Settings)
+    async function saveSection(name) {
+        let newData = {};
+        
+        if (name === 'hero') {
+            newData = {
+                line1: document.getElementById('heroLine1').value,
+                line2: document.getElementById('heroLine2').value,
+                subtitle: document.getElementById('heroSubtitle').value,
+                cta1: document.getElementById('heroCta1').value,
+                cta2: document.getElementById('heroCta2').value
+            };
+        } else if (name === 'about') {
+            newData = SiteData.get('about') || {};
+            newData.title = document.getElementById('aboutTitle').value;
+            newData.greeting = document.getElementById('aboutGreeting').value;
+            newData.p1 = document.getElementById('aboutP1').value;
+            newData.p2 = document.getElementById('aboutP2').value;
+            
+            // Handle Profile Image Upload directly in About Panel
+            const fileInput = document.getElementById('aboutProfileUpload');
+            if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                try {
+                    const file = fileInput.files[0];
+                    const ext = file.name.split('.').pop();
+                    const fileName = `profile_${Date.now()}.${ext}`;
+                    
+                    const { data, error } = await supabaseClient.storage
+                        .from('portfolio_images')
+                        .upload(fileName, file);
+
+                    if (error) {
+                        alert('Upload failed: ' + error.message);
+                    } else {
+                        const { data: publicUrlData } = supabaseClient.storage
+                            .from('portfolio_images')
+                            .getPublicUrl(fileName);
+                        newData.profileImage = publicUrlData.publicUrl;
+                    }
+                } catch (e) {
+                    alert('Upload error: ' + e);
+                }
+            }
+        } else if (name === 'contact') {
+            newData = SiteData.get('contact');
+            newData.whatsapp = document.getElementById('contactWA').value;
+            newData.whatsappLink = document.getElementById('contactWA').value.replace(/\D/g,'');
+            newData.email = document.getElementById('contactEmail').value;
+            newData.instagram = document.getElementById('contactIG').value;
+            newData.instagramLink = 'https://instagram.com/' + document.getElementById('contactIG').value.replace('@','');
+            newData.behance = document.getElementById('contactBehance').value;
+            newData.dribbble = document.getElementById('contactDribbble').value;
+            newData.linkedin = document.getElementById('contactLinkedIn').value;
+        } else if (name === 'settings') {
+            newData = {
+                siteTitle: document.getElementById('siteTitle').value,
+                logo: document.getElementById('siteLogo').value,
+                meta: document.getElementById('siteMeta').value,
+                accentColor: document.getElementById('siteColor').value,
+                year: document.getElementById('siteYear').value
+            };
+        }
+        
+        if (Object.keys(newData).length > 0) {
+            await SiteData.save(name, newData);
+            showToast(name.charAt(0).toUpperCase() + name.slice(1) + ' section saved!');
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        checkAuth().then(() => {
+            SiteData.loadFromServer().then(() => {
+                loadAdminData();
+            });
+        });
+    });
+</script>
+</body>
+</html>
