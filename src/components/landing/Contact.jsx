@@ -46,18 +46,48 @@ export default function Contact({ data }) {
                     </p>
                     
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                            <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(212, 175, 55, 0.2)' }}>
-                                <i className="fa-brands fa-whatsapp"></i>
-                            </div>
-                            <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px' }}>{data.whatsapp || '+91 9343407099'}</span>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                            <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(212, 175, 55, 0.2)' }}>
-                                <i className="fa-solid fa-envelope"></i>
-                            </div>
-                            <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px' }}>{data.email || 'hello@nandanigraphicano.com'}</span>
-                        </div>
+                        {data?.contact?.links && data.contact.links.length > 0 ? (
+                            data.contact.links.map((link, idx) => {
+                                const platformIcons = {
+                                    whatsapp: 'fa-brands fa-whatsapp',
+                                    instagram: 'fa-brands fa-instagram',
+                                    email: 'fa-regular fa-envelope',
+                                    linkedin: 'fa-brands fa-linkedin-in',
+                                    behance: 'fa-brands fa-behance',
+                                    dribbble: 'fa-brands fa-dribbble',
+                                    youtube: 'fa-brands fa-youtube',
+                                    twitter: 'fa-brands fa-x-twitter',
+                                    facebook: 'fa-brands fa-facebook-f',
+                                    phone: 'fa-solid fa-phone',
+                                    website: 'fa-solid fa-globe',
+                                    custom: 'fa-solid fa-link'
+                                };
+                                const iconClass = platformIcons[link.platform] || 'fa-solid fa-link';
+                                return (
+                                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                                        <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)' }}>
+                                            <i className={iconClass}></i>
+                                        </div>
+                                        <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px' }}>{link.value}</span>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                                    <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)' }}>
+                                        <i className="fa-brands fa-whatsapp"></i>
+                                    </div>
+                                    <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px' }}>{data?.contact?.whatsapp || '+91 9343407099'}</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                                    <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)' }}>
+                                        <i className="fa-regular fa-envelope"></i>
+                                    </div>
+                                    <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px' }}>{data?.contact?.email || 'Patidarnandani761@gmail.com'}</span>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
 
