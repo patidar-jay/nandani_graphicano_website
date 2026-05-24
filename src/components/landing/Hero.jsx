@@ -24,13 +24,6 @@ export default function Hero({ data }) {
             /* ── master timeline ── */
             const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-            /* ── 1. CREATIVE label – typewriter / clipPath reveal ── */
-            tl.fromTo(
-
-                { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-                { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.2, ease: 'power3.inOut' },
-                0.15
-            );
 
             /* ── 2. Title lines stagger ── */
             titleLinesRef.current.forEach((line, i) => {
