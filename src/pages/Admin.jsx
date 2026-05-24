@@ -260,6 +260,14 @@ export default function Admin() {
         { name: 'Royal Purple', hex: '#B721FF' }
     ];
 
+    const bgPresets = [
+        { name: 'Purple Gradient', value: 'linear-gradient(to right top, #f5e4fb, #efdaf7, #e9d0f2, #e3c6ee, #ddbcea)' },
+        { name: 'Dark Mode', value: '#1A1A2E' },
+        { name: 'Clean White', value: '#FFFFFF' },
+        { name: 'Ocean', value: 'linear-gradient(to right, #8e9eab, #eef2f3)' },
+        { name: 'Sunset', value: 'linear-gradient(120deg, #f6d365 0%, #fda085 100%)' }
+    ];
+
     if (loading || dataLoading || !formData) return <div style={{ padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'var(--font-sans)', color: 'var(--muted)' }}>Loading admin...</div>;
 
     const tabs = [
@@ -353,6 +361,43 @@ export default function Admin() {
                                         onChange={e => setFormData({ ...formData, theme: { ...formData.theme, primaryColor: e.target.value } })}
                                     />
                                 </div>
+                            </div>
+                            <div className="form-group" style={{ marginTop: '2rem', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '1.5rem' }}>
+                                <label className="form-label">Background Color / Gradient</label>
+                                <p className="form-hint" style={{ marginBottom: '1rem' }}>Select a background color or gradient for the website.</p>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                                    {bgPresets.map((preset, idx) => (
+                                        <div 
+                                            key={idx}
+                                            onClick={() => setFormData({ ...formData, theme: { ...formData.theme, bgColor: preset.value } })}
+                                            style={{
+                                                background: preset.value,
+                                                height: '60px',
+                                                borderRadius: '10px',
+                                                cursor: 'pointer',
+                                                border: formData.theme?.bgColor === preset.value ? '4px solid var(--text)' : '2px solid transparent',
+                                                boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+                                                display: 'flex',
+                                                alignItems: 'flex-end',
+                                                padding: '0.5rem',
+                                                color: preset.value.includes('#FFF') ? '#000' : '#fff',
+                                                fontSize: '0.8rem',
+                                                fontWeight: 'bold',
+                                                textShadow: preset.value.includes('#FFF') ? 'none' : '0 1px 3px rgba(0,0,0,0.8)'
+                                            }}
+                                        >
+                                            {preset.name}
+                                        </div>
+                                    ))}
+                                </div>
+                                <label className="form-label">Custom Background CSS (Hex, RGB, or linear-gradient)</label>
+                                <input 
+                                    type="text" 
+                                    className="form-input" 
+                                    placeholder="e.g. #000000 or linear-gradient(...)"
+                                    value={formData.theme?.bgColor || ''} 
+                                    onChange={e => setFormData({ ...formData, theme: { ...formData.theme, bgColor: e.target.value } })}
+                                />
                             </div>
                         </div>
                     </div>

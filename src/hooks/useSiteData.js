@@ -45,20 +45,33 @@ const defaultData = {
         { text: "Working with Nandani was a game-changer for our startup. She understood our vision perfectly and delivered a brand identity that truly represents us.", author: "Priya K.", company: "GreenLeaf" }
     ],
     theme: {
-        primaryColor: "#5A3A22"
+        primaryColor: "#5A3A22",
+        bgColor: "linear-gradient(to right top, #f5e4fb, #efdaf7, #e9d0f2, #e3c6ee, #ddbcea)"
     }
 };
 
-function applyThemeColor(hexColor) {
-    if (!hexColor) return;
-    const r = parseInt(hexColor.slice(1, 3), 16);
-    const g = parseInt(hexColor.slice(3, 5), 16);
-    const b = parseInt(hexColor.slice(5, 7), 16);
+function applyThemeColor(themeObj) {
+    if (!themeObj) return;
+    
     const root = document.documentElement;
-    root.style.setProperty('--accent', hexColor);
-    root.style.setProperty('--accent-rgb', `${r}, ${g}, ${b}`);
-    root.style.setProperty('--accent-gradient', `linear-gradient(135deg, ${hexColor} 0%, rgba(${r},${g},${b},0.8) 55%, rgba(${r},${g},${b},0.6) 100%)`);
-    root.style.setProperty('--accent-glow', `rgba(${r}, ${g}, ${b}, 0.1)`);
+
+    // Apply primary color
+    if (themeObj.primaryColor) {
+        const hexColor = themeObj.primaryColor;
+        const r = parseInt(hexColor.slice(1, 3), 16);
+        const g = parseInt(hexColor.slice(3, 5), 16);
+        const b = parseInt(hexColor.slice(5, 7), 16);
+        root.style.setProperty('--accent', hexColor);
+        root.style.setProperty('--accent-rgb', `${r}, ${g}, ${b}`);
+        root.style.setProperty('--accent-gradient', `linear-gradient(135deg, ${hexColor} 0%, rgba(${r},${g},${b},0.8) 55%, rgba(${r},${g},${b},0.6) 100%)`);
+        root.style.setProperty('--accent-glow', `rgba(${r}, ${g}, ${b}, 0.1)`);
+    }
+
+    // Apply background color
+    if (themeObj.bgColor) {
+        root.style.setProperty('--bg', themeObj.bgColor);
+        root.style.setProperty('--card', themeObj.bgColor);
+    }
 }
 
 export function useSiteData() {
@@ -99,14 +112,14 @@ export function useSiteData() {
                         merged.projects = db.projects;
                     }
 
-                    if (db.theme && db.theme.primaryColor) {
-                        merged.theme = db.theme;
+                    if (db.theme) {
+                        merged.theme = { ...merged.theme, ...db.theme };
                     }
                     
-                    applyThemeColor(merged.theme.primaryColor);
+                    applyThemeColor(merged.theme);
                     setData(merged);
                 } else {
-                    applyThemeColor(defaultData.theme.primaryColor);
+                    applyThemeColor(defaultData.theme);
                 }
             } catch (err) {
                 console.error("Failed to load site data:", err);
@@ -122,8 +135,8 @@ export function useSiteData() {
         try {
             const { error } = await supabase.from('site_data').upsert({ id: 1, data: newData });
             if (error) throw error;
-            if (newData.theme && newData.theme.primaryColor) {
-                applyThemeColor(newData.theme.primaryColor);
+            if (newData.theme) {
+                applyThemeColor(newData.theme);
             }
             setData(newData);
             return true;
