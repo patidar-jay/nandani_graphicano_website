@@ -8,7 +8,7 @@ export default function Hero({ data }) {
     const sectionRef = useRef(null);
     const bgRef = useRef(null);
     const overlayRef = useRef(null);
-    const labelRef = useRef(null);
+
     const titleLinesRef = useRef([]);
     const subtitleRef = useRef(null);
     const btn1Ref = useRef(null);
@@ -26,7 +26,7 @@ export default function Hero({ data }) {
 
             /* ── 1. CREATIVE label – typewriter / clipPath reveal ── */
             tl.fromTo(
-                labelRef.current,
+
                 { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
                 { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.2, ease: 'power3.inOut' },
                 0.15
@@ -190,25 +190,7 @@ export default function Hero({ data }) {
 
             {/* ── Content ── */}
             <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 2, width: '100%' }}>
-                {/* CREATIVE label */}
-                <div
-                    ref={labelRef}
-                    style={{
-                        fontFamily: "'Outfit', sans-serif",
-                        fontSize: 'clamp(1rem, 3vw, 1.5rem)',
-                        background: 'var(--accent-gradient)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        textTransform: 'uppercase',
-                        letterSpacing: '5px',
-                        marginBottom: '1rem',
-                        fontWeight: 600,
-                        opacity: 0,
-                        display: 'inline-block',
-                    }}
-                >
-                    Creative
-                </div>
+
 
                 {/* Title – each line animates separately */}
                 <h1

@@ -116,9 +116,11 @@ export function useSiteData() {
                         merged.theme = { ...merged.theme, ...db.theme };
                     }
                     
+                    localStorage.setItem('site_theme', JSON.stringify(merged.theme));
                     applyThemeColor(merged.theme);
                     setData(merged);
                 } else {
+                    localStorage.setItem('site_theme', JSON.stringify(defaultData.theme));
                     applyThemeColor(defaultData.theme);
                 }
             } catch (err) {
@@ -136,6 +138,7 @@ export function useSiteData() {
             const { error } = await supabase.from('site_data').upsert({ id: 1, data: newData });
             if (error) throw error;
             if (newData.theme) {
+                localStorage.setItem('site_theme', JSON.stringify(newData.theme));
                 applyThemeColor(newData.theme);
             }
             setData(newData);
