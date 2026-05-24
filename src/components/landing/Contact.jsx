@@ -81,7 +81,7 @@ export default function Contact({ data }) {
                         <button type="submit" disabled={status === 'loading'} style={{
                             width: '100%', padding: '1.2rem', background: status === 'success' ? '#2e7d32' : 'var(--accent-gradient)', color: '#fff', border: 'none', borderRadius: '10px', fontSize: '1.1rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', cursor: status === 'loading' ? 'wait' : 'none', transition: 'all 0.3s', boxShadow: '0 5px 15px rgba(255, 106, 136, 0.2)'
                         }}>
-                            {status === 'loading' ? 'Sending...' : status === 'success' ? 'Message Sent!' : status === 'error' ? 'Error. Try Again' : 'Send Message'}
+                            {status === 'loading' ? 'Sending...' : status === 'success' ? 'Message Sent!' : status === 'error' ? 'Error. Try Again' : 'Hire Me'}
                         </button>
                     </form>
                 </div>

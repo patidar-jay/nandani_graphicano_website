@@ -12,7 +12,6 @@ export default function Hero({ data }) {
     const titleLinesRef = useRef([]);
     const subtitleRef = useRef(null);
     const btn1Ref = useRef(null);
-    const btn2Ref = useRef(null);
     const orb1Ref = useRef(null);
     const orb2Ref = useRef(null);
     const orb3Ref = useRef(null);
@@ -58,12 +57,6 @@ export default function Hero({ data }) {
                 { y: 50, opacity: 0, scale: 0.92 },
                 { y: 0, opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.4)' },
                 1.2
-            );
-            tl.fromTo(
-                btn2Ref.current,
-                { y: 50, opacity: 0, scale: 0.92 },
-                { y: 0, opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.4)' },
-                1.4
             );
 
             /* ── 5. Floating decorative orbs – infinite timeline ── */
@@ -220,7 +213,7 @@ export default function Hero({ data }) {
                 {/* Title – each line animates separately */}
                 <h1
                     style={{
-                        fontFamily: 'var(--font-heading)',
+                        fontFamily: 'var(--font-hatch)',
                         fontSize: 'clamp(3rem, 8vw, 6rem)',
                         color: 'var(--text)',
                         lineHeight: 1.1,
@@ -287,34 +280,6 @@ export default function Hero({ data }) {
                         }}
                     >
                         VIEW PORTFOLIO
-                    </a>
-                    <a
-                        ref={btn2Ref}
-                        href="#contact"
-                        style={{
-                            padding: '1.2rem 3rem',
-                            background: 'transparent',
-                            color: 'var(--text)',
-                            textDecoration: 'none',
-                            borderRadius: '50px',
-                            fontWeight: 600,
-                            letterSpacing: '1px',
-                            transition: 'all 0.35s cubic-bezier(0.165,0.84,0.44,1)',
-                            border: '1px solid rgba(0,0,0,0.1)',
-                            opacity: 0,
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(255,106,136,0.04)';
-                            e.currentTarget.style.borderColor = 'rgba(255,106,136,0.35)';
-                            e.currentTarget.style.transform = 'translateY(-3px)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                        }}
-                    >
-                        HIRE ME
                     </a>
                 </div>
             </div>
