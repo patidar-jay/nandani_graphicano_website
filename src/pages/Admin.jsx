@@ -184,6 +184,17 @@ export default function Admin() {
         alert(success ? 'Saved successfully!' : 'Error saving. Please try again.');
     };
 
+    // Reorder helper
+    const moveItem = (section, index, direction) => {
+        const array = [...(formData[section] || [])];
+        if (direction === 'up' && index > 0) {
+            [array[index - 1], array[index]] = [array[index], array[index - 1]];
+        } else if (direction === 'down' && index < array.length - 1) {
+            [array[index + 1], array[index]] = [array[index], array[index + 1]];
+        }
+        setFormData({ ...formData, [section]: array });
+    };
+
     // Service helpers
     const updateService = (index, field, value) => {
         const updated = [...formData.services];
@@ -425,8 +436,14 @@ export default function Admin() {
                                 {(formData.services || []).map((service, idx) => (
                                     <div key={idx} className="admin-card">
                                         <div className="admin-card-header">
-                                            <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
-                                            <i className={`fa-solid ${service.icon}`} style={{ fontSize: '1.5rem', color: 'var(--accent)' }}></i>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                                <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
+                                                <i className={`fa-solid ${service.icon}`} style={{ fontSize: '1.5rem', color: 'var(--accent)' }}></i>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                <button onClick={() => moveItem('services', idx, 'up')} disabled={idx === 0} style={{ background: 'none', border: 'none', cursor: idx === 0 ? 'not-allowed' : 'pointer', color: idx === 0 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Up"><i className="fa-solid fa-circle-arrow-up"></i></button>
+                                                <button onClick={() => moveItem('services', idx, 'down')} disabled={idx === formData.services?.length - 1} style={{ background: 'none', border: 'none', cursor: idx === formData.services?.length - 1 ? 'not-allowed' : 'pointer', color: idx === formData.services?.length - 1 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Down"><i className="fa-solid fa-circle-arrow-down"></i></button>
+                                            </div>
                                         </div>
                                         <div className="form-group">
                                             <label className="form-label">Icon Class</label>
@@ -463,10 +480,18 @@ export default function Admin() {
                                 {(formData.projects || []).map((proj, idx) => (
                                     <div key={idx} className="admin-card">
                                         <div className="admin-card-header">
-                                            <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
-                                            <button onClick={() => removeProject(idx)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '0.9rem' }}>
-                                                <i className="fa-solid fa-trash"></i> Remove
-                                            </button>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                                <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                    <button onClick={() => moveItem('projects', idx, 'up')} disabled={idx === 0} style={{ background: 'none', border: 'none', cursor: idx === 0 ? 'not-allowed' : 'pointer', color: idx === 0 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Up"><i className="fa-solid fa-circle-arrow-up"></i></button>
+                                                    <button onClick={() => moveItem('projects', idx, 'down')} disabled={idx === formData.projects?.length - 1} style={{ background: 'none', border: 'none', cursor: idx === formData.projects?.length - 1 ? 'not-allowed' : 'pointer', color: idx === formData.projects?.length - 1 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Down"><i className="fa-solid fa-circle-arrow-down"></i></button>
+                                                </div>
+                                                <button onClick={() => removeProject(idx)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '0.9rem', marginLeft: '0.5rem' }}>
+                                                    <i className="fa-solid fa-trash"></i> Remove
+                                                </button>
+                                            </div>
                                         </div>
                                         <div className="form-row">
                                             <div className="form-group">
@@ -516,10 +541,18 @@ export default function Admin() {
                                 {(formData.testimonials || []).map((t, idx) => (
                                     <div key={idx} className="admin-card" style={{ position: 'relative' }}>
                                         <div className="admin-card-header">
-                                            <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
-                                            <button onClick={() => removeTestimonial(idx)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '0.9rem' }}>
-                                                <i className="fa-solid fa-trash"></i> Remove
-                                            </button>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                                <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                    <button onClick={() => moveItem('testimonials', idx, 'up')} disabled={idx === 0} style={{ background: 'none', border: 'none', cursor: idx === 0 ? 'not-allowed' : 'pointer', color: idx === 0 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Up"><i className="fa-solid fa-circle-arrow-up"></i></button>
+                                                    <button onClick={() => moveItem('testimonials', idx, 'down')} disabled={idx === formData.testimonials?.length - 1} style={{ background: 'none', border: 'none', cursor: idx === formData.testimonials?.length - 1 ? 'not-allowed' : 'pointer', color: idx === formData.testimonials?.length - 1 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Down"><i className="fa-solid fa-circle-arrow-down"></i></button>
+                                                </div>
+                                                <button onClick={() => removeTestimonial(idx)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '0.9rem', marginLeft: '0.5rem' }}>
+                                                    <i className="fa-solid fa-trash"></i> Remove
+                                                </button>
+                                            </div>
                                         </div>
                                         <div className="form-group">
                                             <label className="form-label">Testimonial Text</label>
