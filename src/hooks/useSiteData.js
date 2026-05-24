@@ -93,10 +93,12 @@ export function useSiteData() {
     useEffect(() => {
         async function fetchSiteData() {
             try {
+                // Add a cache buster (e.g. dummy neq filter) to force browsers to fetch fresh data
                 const { data: dbData, error } = await supabase
                     .from('site_data')
                     .select('data')
                     .eq('id', 1)
+                    .neq('id', Date.now()) // Cache buster
                     .single();
                 
                 if (error) throw error;
