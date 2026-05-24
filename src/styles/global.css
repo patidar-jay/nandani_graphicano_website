@@ -5,9 +5,10 @@
     --card: linear-gradient(to right top, #f5e4fb, #efdaf7, #e9d0f2, #e3c6ee, #ddbcea);
     --text: #2C3E50;
     --muted: #7F8C8D;
-    --accent: #FF9A8B;
-    --accent-gradient: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);
-    --accent-glow: rgba(255, 106, 136, 0.1);
+    --accent: #5A3A22;
+    --accent-rgb: 90, 58, 34;
+    --accent-gradient: linear-gradient(135deg, #5A3A22 0%, rgba(90, 58, 34, 0.8) 55%, rgba(90, 58, 34, 0.6) 100%);
+    --accent-glow: rgba(var(--accent-rgb), 0.1);
     --border: rgba(0, 0, 0, 0.04);
 
     --font-sans: 'Outfit', 'Inter', sans-serif;
@@ -22,7 +23,7 @@ html {
 
 /* ── Premium text selection ── */
 ::selection {
-    background: rgba(255, 106, 136, 0.2);
+    background: rgba(var(--accent-rgb), 0.2);
     color: var(--text);
 }
 
@@ -101,7 +102,7 @@ h1, h2, h3, h4, h5, h6 {
         105deg,
         transparent 30%,
         rgba(255, 154, 139, 0.06) 45%,
-        rgba(255, 106, 136, 0.10) 50%,
+        rgba(var(--accent-rgb), 0.10) 50%,
         rgba(255, 154, 139, 0.06) 55%,
         transparent 70%
     );
@@ -167,7 +168,7 @@ h1, h2, h3, h4, h5, h6 {
 .cursor-outline {
     width: 40px;
     height: 40px;
-    border: 1px solid rgba(255, 106, 136, 0.5);
+    border: 1px solid rgba(var(--accent-rgb), 0.5);
     border-radius: 50%;
     position: fixed;
     top: 0;

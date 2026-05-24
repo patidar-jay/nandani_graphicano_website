@@ -52,7 +52,7 @@ export default function Admin() {
         };
 
         const grow = () => { ring.style.width = '50px'; ring.style.height = '50px'; ring.style.borderColor = 'var(--accent)'; };
-        const shrink = () => { ring.style.width = '35px'; ring.style.height = '35px'; ring.style.borderColor = 'rgba(255, 106, 136, 0.4)'; };
+        const shrink = () => { ring.style.width = '35px'; ring.style.height = '35px'; ring.style.borderColor = 'rgba(var(--accent-rgb), 0.4)'; };
 
         document.addEventListener('mousemove', moveCursor);
         document.querySelectorAll('a, button, input, textarea, select, .admin-card').forEach(el => {
@@ -241,9 +241,18 @@ export default function Admin() {
 
     const getPreset = (platform) => platformPresets.find(p => p.value === platform) || platformPresets[platformPresets.length - 1];
 
+    const themePresets = [
+        { name: 'Chocolat', hex: '#5A3A22' },
+        { name: 'Original Pink', hex: '#FF9A8B' },
+        { name: 'Ocean Blue', hex: '#0093E9' },
+        { name: 'Emerald', hex: '#00b09b' },
+        { name: 'Royal Purple', hex: '#B721FF' }
+    ];
+
     if (loading || dataLoading || !formData) return <div style={{ padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'var(--font-sans)', color: 'var(--muted)' }}>Loading admin...</div>;
 
     const tabs = [
+        { id: 'theme', icon: 'fa-solid fa-palette', label: 'Theme Colors' },
         { id: 'hero', icon: 'fa-solid fa-house', label: 'Hero Section' },
         { id: 'about', icon: 'fa-solid fa-user', label: 'About' },
         { id: 'services', icon: 'fa-solid fa-briefcase', label: 'Services' },
@@ -280,6 +289,63 @@ export default function Admin() {
             </aside>
 
             <main className="main-content">
+
+                {/* ========== THEME COLORS ========== */}
+                {activeTab === 'theme' && (
+                    <div className="panel active">
+                        <div className="admin-section">
+                            <div className="admin-section-head">
+                                <h2>Theme Colors</h2>
+                                <button className="btn-admin" onClick={() => handleSave('theme')} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">Primary Theme Color</label>
+                                <p className="form-hint" style={{ marginBottom: '1rem' }}>Select a color to update the website's entire look instantly.</p>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                                    {themePresets.map(preset => (
+                                        <div 
+                                            key={preset.hex}
+                                            onClick={() => setFormData({ ...formData, theme: { ...formData.theme, primaryColor: preset.hex } })}
+                                            style={{
+                                                background: preset.hex,
+                                                height: '60px',
+                                                borderRadius: '10px',
+                                                cursor: 'pointer',
+                                                border: formData.theme?.primaryColor === preset.hex ? '4px solid #fff' : '2px solid transparent',
+                                                boxShadow: formData.theme?.primaryColor === preset.hex ? `0 0 0 2px ${preset.hex}` : '0 4px 10px rgba(0,0,0,0.1)',
+                                                display: 'flex',
+                                                alignItems: 'flex-end',
+                                                padding: '0.5rem',
+                                                color: '#fff',
+                                                fontSize: '0.8rem',
+                                                fontWeight: 'bold',
+                                                textShadow: '0 1px 3px rgba(0,0,0,0.8)'
+                                            }}
+                                        >
+                                            {preset.name}
+                                        </div>
+                                    ))}
+                                </div>
+                                <label className="form-label">Custom Hex Color</label>
+                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                    <input 
+                                        type="color" 
+                                        value={formData.theme?.primaryColor || '#5A3A22'} 
+                                        onChange={e => setFormData({ ...formData, theme: { ...formData.theme, primaryColor: e.target.value } })}
+                                        style={{ width: '50px', height: '50px', border: 'none', borderRadius: '5px', cursor: 'pointer', padding: 0 }}
+                                    />
+                                    <input 
+                                        type="text" 
+                                        className="form-input" 
+                                        style={{ maxWidth: '150px', margin: 0 }}
+                                        value={formData.theme?.primaryColor || '#5A3A22'} 
+                                        onChange={e => setFormData({ ...formData, theme: { ...formData.theme, primaryColor: e.target.value } })}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* ========== HERO SECTION ========== */}
                 {activeTab === 'hero' && (

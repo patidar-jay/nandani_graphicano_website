@@ -43,8 +43,23 @@ const defaultData = {
         { text: "Nandani completely transformed our brand identity. The attention to detail and creative vision is unmatched. Every deliverable exceeded our expectations.", author: "Sarah J.", company: "TechFlow" },
         { text: "Incredible designer with brilliant aesthetic sense. Fast turnaround, super responsive communication, and the final results were absolutely stunning.", author: "Mark D.", company: "Elevate" },
         { text: "Working with Nandani was a game-changer for our startup. She understood our vision perfectly and delivered a brand identity that truly represents us.", author: "Priya K.", company: "GreenLeaf" }
-    ]
+    ],
+    theme: {
+        primaryColor: "#5A3A22"
+    }
 };
+
+function applyThemeColor(hexColor) {
+    if (!hexColor) return;
+    const r = parseInt(hexColor.slice(1, 3), 16);
+    const g = parseInt(hexColor.slice(3, 5), 16);
+    const b = parseInt(hexColor.slice(5, 7), 16);
+    const root = document.documentElement;
+    root.style.setProperty('--accent', hexColor);
+    root.style.setProperty('--accent-rgb', `${r}, ${g}, ${b}`);
+    root.style.setProperty('--accent-gradient', `linear-gradient(135deg, ${hexColor} 0%, rgba(${r},${g},${b},0.8) 55%, rgba(${r},${g},${b},0.6) 100%)`);
+    root.style.setProperty('--accent-glow', `rgba(${r}, ${g}, ${b}, 0.1)`);
+}
 
 export function useSiteData() {
     const [data, setData] = useState(defaultData);
@@ -83,8 +98,15 @@ export function useSiteData() {
                     if (db.projects && Array.isArray(db.projects) && db.projects.length > 0 && db.projects[0].slug) {
                         merged.projects = db.projects;
                     }
+
+                    if (db.theme && db.theme.primaryColor) {
+                        merged.theme = db.theme;
+                    }
                     
+                    applyThemeColor(merged.theme.primaryColor);
                     setData(merged);
+                } else {
+                    applyThemeColor(defaultData.theme.primaryColor);
                 }
             } catch (err) {
                 console.error("Failed to load site data:", err);
@@ -100,6 +122,9 @@ export function useSiteData() {
         try {
             const { error } = await supabase.from('site_data').upsert({ id: 1, data: newData });
             if (error) throw error;
+            if (newData.theme && newData.theme.primaryColor) {
+                applyThemeColor(newData.theme.primaryColor);
+            }
             setData(newData);
             return true;
         } catch (err) {

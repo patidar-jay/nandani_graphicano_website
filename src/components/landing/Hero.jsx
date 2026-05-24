@@ -267,16 +267,16 @@ export default function Hero({ data }) {
                             fontWeight: 600,
                             letterSpacing: '1px',
                             transition: 'all 0.35s cubic-bezier(0.165,0.84,0.44,1)',
-                            boxShadow: '0 10px 30px rgba(255, 106, 136, 0.25)',
+                            boxShadow: '0 10px 30px rgba(var(--accent-rgb), 0.25)',
                             opacity: 0,
                         }}
                         onMouseEnter={(e) => {
                             e.currentTarget.style.transform = 'translateY(-3px) scale(1.03)';
-                            e.currentTarget.style.boxShadow = '0 18px 35px rgba(255, 106, 136, 0.35)';
+                            e.currentTarget.style.boxShadow = '0 18px 35px rgba(var(--accent-rgb), 0.35)';
                         }}
                         onMouseLeave={(e) => {
                             e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                            e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 106, 136, 0.25)';
+                            e.currentTarget.style.boxShadow = '0 10px 30px rgba(var(--accent-rgb), 0.25)';
                         }}
                     >
                         VIEW PORTFOLIO

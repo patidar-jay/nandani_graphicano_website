@@ -88,7 +88,7 @@ export default function Services({ data }) {
                                 transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease',
                                 transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
                                 boxShadow: isHovered
-                                    ? '0 25px 60px rgba(255, 106, 136, 0.12), 0 8px 20px rgba(0,0,0,0.06)'
+                                    ? '0 25px 60px rgba(var(--accent-rgb), 0.12), 0 8px 20px rgba(0,0,0,0.06)'
                                     : undefined,
                                 cursor: 'default'
                             }}
@@ -138,7 +138,7 @@ export default function Services({ data }) {
                                 justifyContent: 'center',
                                 fontSize: '1.8rem',
                                 marginBottom: '2rem',
-                                border: '1px solid rgba(255, 106, 136, 0.15)',
+                                border: '1px solid rgba(var(--accent-rgb), 0.15)',
                                 transition: 'background 0.4s ease, transform 0.4s ease',
                                 transform: isHovered ? 'scale(1.08)' : 'scale(1)',
                                 position: 'relative',

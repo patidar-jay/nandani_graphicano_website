@@ -103,9 +103,9 @@ export default function Testimonials({ data }) {
                                 transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border-color 0.5s ease',
                                 transform: isHovered ? 'translateY(-6px)' : 'translateY(0)',
                                 boxShadow: isHovered
-                                    ? '0 25px 60px rgba(255, 106, 136, 0.1), 0 8px 20px rgba(0,0,0,0.05)'
+                                    ? '0 25px 60px rgba(var(--accent-rgb), 0.1), 0 8px 20px rgba(0,0,0,0.05)'
                                     : undefined,
-                                borderColor: isHovered ? 'rgba(255, 106, 136, 0.25)' : undefined,
+                                borderColor: isHovered ? 'rgba(var(--accent-rgb), 0.25)' : undefined,
                                 cursor: 'default'
                             }}
                         >
@@ -128,11 +128,11 @@ export default function Testimonials({ data }) {
                                 top: '2rem',
                                 left: '2rem',
                                 fontSize: '4rem',
-                                background: isHovered
-                                    ? 'linear-gradient(135deg, rgba(255,154,139,0.15) 0%, rgba(255,106,136,0.08) 100%)'
+                                backgroundImage: isHovered 
+                                    ? 'linear-gradient(135deg, rgba(var(--accent-rgb),0.15) 0%, rgba(var(--accent-rgb),0.08) 100%)'
                                     : 'transparent',
                                 WebkitBackgroundClip: 'text',
-                                color: isHovered ? 'rgba(255, 106, 136, 0.15)' : 'var(--border)',
+                                color: isHovered ? 'rgba(var(--accent-rgb), 0.15)' : 'var(--border)',
                                 transition: 'color 0.4s ease',
                                 zIndex: 0
                             }}></i>
