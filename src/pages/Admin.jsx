@@ -140,9 +140,14 @@ export default function Admin() {
         if (!loading && !user) navigate('/login.html');
     }, [user, loading, navigate]);
 
+    // Track whether we've initialized formData from DB (not from defaults)
+    const [formDataInitialized, setFormDataInitialized] = useState(false);
+
     useEffect(() => {
-        if (siteData && !formData) {
-            // Deep copy + migrate old contact format to new links array format
+        // CRITICAL: Only set formData AFTER DB loading is complete
+        // Previously this fired immediately with defaultData (before DB fetch),
+        // causing formData to be set from defaults and never updated with DB data.
+        if (siteData && !dataLoading && !formDataInitialized) {
             const copy = JSON.parse(JSON.stringify(siteData));
             if (copy.contact && !copy.contact.links) {
                 // Migrate old flat contact to links array
@@ -153,8 +158,9 @@ export default function Admin() {
                 copy.contact.links = links;
             }
             setFormData(copy);
+            setFormDataInitialized(true);
         }
-    }, [siteData, formData]);
+    }, [siteData, dataLoading, formDataInitialized]);
 
     useEffect(() => {
         if (activeTab === 'messages') loadMessages();
