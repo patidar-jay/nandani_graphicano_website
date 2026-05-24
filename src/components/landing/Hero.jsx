@@ -179,7 +179,7 @@ export default function Hero({ data }) {
             />
 
             {/* ── Content ── */}
-            <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 2, width: '100%' }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto', marginTop: '-10vh', position: 'relative', zIndex: 2, width: '100%' }}>
 
 
                 {/* Title – each line animates separately */}
