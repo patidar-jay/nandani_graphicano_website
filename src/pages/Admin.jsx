@@ -189,6 +189,9 @@ export default function Admin() {
                 dataToSave = { ...flat, links: formData.contact.links };
             }
             const updatedSiteData = { ...freshData, [section]: dataToSave };
+            console.log('[DEBUG] Saving section:', section);
+            console.log('[DEBUG] dataToSave:', JSON.stringify(dataToSave));
+            console.log('[DEBUG] updatedSiteData.contact:', JSON.stringify(updatedSiteData.contact));
             const success = await updateData(updatedSiteData);
             setSaving(false);
             alert(success ? 'Saved successfully!' : 'Error saving. Please try again.');
