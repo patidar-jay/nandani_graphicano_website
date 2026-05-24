@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nandani Graphicano | Premium Graphic Design Studio</title>
+    <meta name="description" content="Nandani Graphicano - High-end freelance graphic designer specializing in logos, branding, and social media designs.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Marker+Hatch&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Adobe Fonts (Typekit) -->
+    <link rel="stylesheet" href="https://use.typekit.net/bqv5ngw.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css?v=6">
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="js/supabase-client.js" defer></script>
+    
+    <!-- Custom JS -->
+    <script src="js/sitedata.js" defer></script>
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="container nav-wrapper">
+            <nav>
+                <a href="#" class="logo">Nandani<span>.</span></a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#process">Process</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section 1: Hero -->
+    <section id="hero" class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-particles"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title"><div class="font-hatch" style="font-size: 0.6em; color: var(--color-accent-gold); transform: rotate(-4deg); margin-bottom: 15px; text-shadow: 0 0 20px rgba(226, 114, 91, 0.3);">Creative</div> <span>Graphic Designer</span></h1>
+                <p class="hero-subtitle">Logos, Branding, Social Media Designs & Creative Visual Experiences.</p>
+                <div class="hero-cta">
+                    <a href="#portfolio" class="btn btn-primary">View Portfolio</a>
+                    <a href="#contact" class="btn btn-outline">Hire Me</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: About -->
+    <section id="about" class="about" style="position: relative; overflow: hidden;">
+        <div class="font-hatch" style="position: absolute; top: 10%; left: -5%; font-size: 20rem; color: rgba(45, 51, 47, 0.04); z-index: 0; line-height: 1; pointer-events: none;">01</div>
+        <div class="container" style="position: relative; z-index: 1;">
+            <h2 class="section-title">The Brand Story</h2>
+            <p class="section-subtitle">Crafting visual identities that leave a lasting impression.</p>
+            
+            <div class="about-grid">
+                <div class="about-image glass-panel">
+                    <img id="about-profile-img" src="assets/images/avatar.png" alt="Nandani Graphicano - Creative Professional">
+                </div>
+                <div class="about-text">
+                    <h3>Hello, I'm Nandani.</h3>
+                    <p>I am a high-tier freelance visual identity expert dedicated to transforming your brand's vision into a stunning visual reality. With a deep passion for modern aesthetics and premium design, I specialize in creating designs that not only look beautiful but also communicate effectively.</p>
+                    <p>My expertise spans across Logo Design, Comprehensive Branding, Social Media Creatives, Thumbnails, Posters, and bespoke Creative Visual Identities. Let's build a brand that stands out in the digital landscape.</p>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                        <a href="#contact" class="btn btn-primary">Let's Collaborate</a>
+                        <a href="#" class="btn btn-outline" download>Download Media Kit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2.5: Creative Arsenal -->
+    <section id="tools" class="tools" style="background: var(--color-bg-dark); padding: 40px 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; opacity: 0.7; align-items: center;">
+                <div class="tool-item" style="text-align: center; font-weight: 600; font-family: var(--font-heading); color: var(--color-text-main); font-size: 1.2rem;">
+                    <i class="fa-solid fa-pen-nib" style="color: var(--color-accent-gold); margin-right: 8px;"></i> Illustrator
+                </div>
+                <div class="tool-item" style="text-align: center; font-weight: 600; font-family: var(--font-heading); color: var(--color-text-main); font-size: 1.2rem;">
+                    <i class="fa-solid fa-image" style="color: var(--color-accent-gold); margin-right: 8px;"></i> Photoshop
+                </div>
+                <div class="tool-item" style="text-align: center; font-weight: 600; font-family: var(--font-heading); color: var(--color-text-main); font-size: 1.2rem;">
+                    <i class="fa-brands fa-figma" style="color: var(--color-accent-gold); margin-right: 8px;"></i> Figma
+                </div>
+                <div class="tool-item" style="text-align: center; font-weight: 600; font-family: var(--font-heading); color: var(--color-text-main); font-size: 1.2rem;">
+                    <i class="fa-solid fa-video" style="color: var(--color-accent-gold); margin-right: 8px;"></i> Premiere Pro
+                </div>
+                <div class="tool-item" style="text-align: center; font-weight: 600; font-family: var(--font-heading); color: var(--color-text-main); font-size: 1.2rem;">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--color-accent-gold); margin-right: 8px;"></i> Canva
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Services -->
+    <section id="services" class="services" style="position: relative; overflow: hidden;">
+        <div class="font-hatch" style="position: absolute; top: 10%; right: -5%; font-size: 20rem; color: rgba(45, 51, 47, 0.04); z-index: 0; line-height: 1; pointer-events: none;">02</div>
+        <div class="container" style="position: relative; z-index: 1;">
+            <h2 class="section-title">Premium Services</h2>
+            <p class="section-subtitle">Comprehensive design solutions tailored for high-end brands.</p>
+            
+            <div class="services-grid" id="dynamic-services-grid">
+                <!-- Services will be injected here by sitedata.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3.5: Impact Stats -->
+    <section id="stats" class="stats" style="background: var(--color-primary-gradient); color: #fff; padding: 60px 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center; gap: 2rem;">
+                <div class="stat-item">
+                    <h3 class="stat-number" data-target="50" style="font-size: 3.5rem; font-family: var(--font-serif); margin-bottom: 0;">0</h3>
+                    <p style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #fff;">Happy Clients</p>
+                </div>
+                <div class="stat-item">
+                    <h3 class="stat-number" data-target="150" style="font-size: 3.5rem; font-family: var(--font-serif); margin-bottom: 0;">0</h3>
+                    <p style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #fff;">Projects Completed</p>
+                </div>
+                <div class="stat-item">
+                    <h3 class="stat-number" data-target="99" style="font-size: 3.5rem; font-family: var(--font-serif); margin-bottom: 0;">0</h3>
+                    <p style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #fff;">Satisfaction Rate %</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Portfolio / Projects -->
+    <section id="portfolio" class="portfolio" style="position: relative; overflow: hidden;">
+        <div class="font-hatch" style="position: absolute; top: 10%; left: -5%; font-size: 20rem; color: rgba(45, 51, 47, 0.04); z-index: 0; line-height: 1; pointer-events: none;">03</div>
+        <div class="container" style="position: relative; z-index: 1;">
+            <h2 class="section-title">Design Work</h2>
+            <p class="section-subtitle">Selected projects — brand identities, packaging, and visual systems crafted to make brands unforgettable.</p>
+
+            <div class="projects-grid" id="dynamic-projects-grid">
+                <!-- Projects will be injected here by sitedata.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Why Choose Me -->
+    <section id="why-me" class="why-me" style="background: var(--color-bg-dark);">
+        <div class="container">
+            <h2 class="section-title">Value Proposition</h2>
+            <p class="section-subtitle">Why elite brands trust Nandani Graphicano.</p>
+            
+            <div class="features-grid">
+                <div class="feature-item glass-panel">
+                    <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <h3>Creative Designs</h3>
+                    <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-top: 10px;">Unique, out-of-the-box concepts that captivate.</p>
+                </div>
+                <div class="feature-item glass-panel">
+                    <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <h3>Fast Delivery</h3>
+                    <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-top: 10px;">Rapid turnaround without compromising quality.</p>
+                </div>
+                <div class="feature-item glass-panel">
+                    <div class="feature-icon"><i class="fa-solid fa-gem"></i></div>
+                    <h3>Modern Aesthetics</h3>
+                    <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-top: 10px;">Staying ahead with ultra-premium design trends.</p>
+                </div>
+                <div class="feature-item glass-panel">
+                    <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
+                    <h3>Pro Quality</h3>
+                    <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-top: 10px;">Pixel-perfect execution in every single detail.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Process -->
+    <section id="process" class="process">
+        <div class="container">
+            <h2 class="section-title">The Workflow</h2>
+            <p class="section-subtitle">A streamlined approach to achieving visual perfection.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content glass-panel">
+                        <h3>01. Discussion</h3>
+                        <p>Understanding your brand, goals, target audience, and project requirements.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content glass-panel">
+                        <h3>02. Research</h3>
+                        <p>Analyzing industry trends, competitors, and gathering creative inspiration.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content glass-panel">
+                        <h3>03. Design</h3>
+                        <p>Crafting the initial concepts and bringing the visual ideas to life.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content glass-panel">
+                        <h3>04. Revision</h3>
+                        <p>Refining the chosen concept based on your valuable feedback.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content glass-panel">
+                        <h3>05. Final Delivery</h3>
+                        <p>Handing over all high-resolution, print and web-ready source files.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Testimonials -->
+    <section id="testimonials" class="testimonials" style="background: var(--color-bg-dark);">
+        <div class="container">
+            <h2 class="section-title">Client Praise</h2>
+            <p class="section-subtitle">What others say about the Nandani Graphicano experience.</p>
+            
+            <div class="testimonials-grid" id="dynamic-testimonials-grid">
+                <!-- Testimonials will be injected here by sitedata.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Contact & Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Let's Create <br><span style="color: var(--color-accent-gold);">Something Amazing.</span></h2>
+                    <p>Ready to elevate your brand's visual identity? Get in touch today to discuss your next big project.</p>
+                    
+                    <div class="contact-links">
+                        <a href="https://wa.me/919343407099" target="_blank"><i class="fa-brands fa-whatsapp"></i> +91 9343407099</a>
+                        <a href="https://instagram.com/nandani_graphicano" target="_blank"><i class="fa-brands fa-instagram"></i> @nandani_graphicano</a>
+                        <a href="mailto:hello@nandanigraphicano.com"><i class="fa-regular fa-envelope"></i> hello@nandanigraphicano.com</a>
+                    </div>
+                </div>
+                
+                <div class="contact-form glass-panel" style="padding: 2.5rem;">
+                    <form id="contactForm" onsubmit="submitContactForm(event)">
+                        <div class="form-group">
+                            <input type="text" id="contactName" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="contactEmail" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="contactMessage" class="form-control" rows="5" placeholder="Tell me about your project..." required></textarea>
+                        </div>
+                        <button type="submit" id="contactSubmitBtn" class="btn btn-primary" style="width:100%;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-behance"></i></a>
+                    <a href="#"><i class="fa-brands fa-dribbble"></i></a>
+                    <a href="https://instagram.com/nandani_graphicano"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                <p>&copy; 2026 Nandani Graphicano. All Rights Reserved. Crafted with passion.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/919343407099" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+</body>
+</html>

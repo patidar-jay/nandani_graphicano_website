@@ -1,39 +1,16 @@
-# Nandani Graphicano | Premium Graphic Design Studio
+# React + Vite
 
-A high-end, bespoke portfolio website designed for an elite freelance graphic designer specializing in logos, branding, and social media designs. 
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-The project features a highly polished **Organic Stone & Terracotta** theme, leveraging premium typography and fluid animations to create an immersive, boutique agency experience.
+Currently, two official plugins are available:
 
-## ✨ Features
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-- **Elite Typography:** Integrated with Adobe Fonts using `Hatch` for artistic, structural headings and `Acumin Variable Concept` for clean, modern readability.
-- **Glassmorphism 2.0:** Soft, frosted glass UI components with organic drop-shadows and subtle terracotta accents.
-- **Smooth Animations:** Buttery-smooth entrance effects and scroll triggers powered by **GSAP**.
-- **Fully Responsive:** Custom layout adjustments ensuring a perfect viewing experience from 4K desktop monitors down to mobile devices.
-- **Custom Interaction:** Features a custom animated cursor that highlights interactive elements.
+## React Compiler
 
-## 🛠️ Technology Stack
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- **HTML5:** Semantic, accessible structure.
-- **CSS3:** Advanced flexbox/grid layouts, CSS variables for robust theming, and glassmorphism utilities.
-- **JavaScript (ES6):** Logic for the custom cursor and DOM manipulation.
-- **GSAP (GreenSock):** High-performance scroll animations.
+## Expanding the ESLint configuration
 
-## 🚀 Live Demo
-
-*(Once deployed, place your live website link here, e.g., `https://patidar-jay.github.io/nandani_graphicano`)*
-
-## 📂 Local Setup
-
-To run this project locally on your machine:
-
-1. Clone this repository.
-2. Open the project folder in your terminal.
-3. Serve the folder using any local web server. For example, using Node.js:
-   ```bash
-   npx serve -p 3000
-   ```
-4. Open `http://localhost:3000` in your browser.
-
----
-*Designed and built to showcase premium graphic design capabilities.*
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

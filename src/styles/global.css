@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;600;800&display=swap');
+
+:root {
+    --bg: #FAFAFA;
+    --card: #FFFFFF;
+    --text: #2C3E50;
+    --muted: #7F8C8D;
+    --accent: #FF9A8B;
+    --accent-gradient: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);
+    --accent-glow: rgba(255, 106, 136, 0.1);
+    --border: rgba(0, 0, 0, 0.04);
+
+    --font-sans: 'Outfit', 'Inter', sans-serif;
+    --font-heading: 'Playfair Display', serif;
+}
+
+/* ── Smooth scroll ── */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ── Premium text selection ── */
+::selection {
+    background: rgba(255, 106, 136, 0.2);
+    color: var(--text);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+    cursor: none; /* Hide default cursor for custom cursor */
+    /* Add a subtle global soft background gradient mesh */
+    background-image:
+        radial-gradient(at 0% 0%, hsla(353,100%,73%,0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(28,100%,74%,0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, hsla(353,100%,73%,0.08) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, hsla(28,100%,74%,0.08) 0px, transparent 50%);
+    background-attachment: fixed;
+}
+
+a, button {
+    cursor: none;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+}
+
+.section-title {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+    text-align: center;
+}
+.section-title span {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 4rem auto;
+}
+
+/* ── Premium Soft Glass Panel ── */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                border-color 0.4s ease;
+}
+
+/* Shimmer pseudo-element */
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255, 154, 139, 0.06) 45%,
+        rgba(255, 106, 136, 0.10) 50%,
+        rgba(255, 154, 139, 0.06) 55%,
+        transparent 70%
+    );
+    background-size: 200% 100%;
+    background-position: -200% center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.glass-panel:hover::before {
+    opacity: 1;
+    animation: shimmer 1.6s ease forwards;
+}
+
+.glass-panel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.06);
+    border-color: rgba(255, 154, 139, 0.3);
+}
+
+/* ── Keyframes ── */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* ── GSAP utility: stagger-reveal ── */
+.stagger-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+/* Custom Cursor */
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-gradient);
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+}
+
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 106, 136, 0.5);
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+/* Floating WhatsApp */
+.floating-whatsapp {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.2);
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+}
+.floating-whatsapp:hover {
+    transform: scale(1.1) rotate(10deg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .section-title { font-size: 2.5rem; }
+    body, a, button { cursor: auto; }
+    .cursor-dot, .cursor-outline { display: none; }
+}
