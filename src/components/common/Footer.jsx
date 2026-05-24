@@ -28,12 +28,12 @@ export default function Footer({ data }) {
                                 custom: 'fa-solid fa-link'
                             };
                             const iconClass = platformIcons[link.platform] || 'fa-solid fa-link';
-                            let href = link.value;
-                            if (link.platform === 'whatsapp') href = `https://wa.me/${link.value.replace(/[^0-9]/g, '')}`;
-                            else if (link.platform === 'email') href = `mailto:${link.value}`;
+                            let href = link.value || '';
+                            if (link.platform === 'whatsapp') href = `https://wa.me/${href.replace(/[^0-9]/g, '')}`;
+                            else if (link.platform === 'email') href = `mailto:${href}`;
                             else if (link.platform === 'instagram' && !href.includes('instagram.com')) href = `https://instagram.com/${href.replace('@', '')}`;
                             else if (link.platform === 'twitter' && !href.includes('twitter.com') && !href.includes('x.com')) href = `https://twitter.com/${href.replace('@', '')}`;
-                            else if (!href.startsWith('http') && !href.startsWith('mailto')) href = `https://${href}`;
+                            else if (href && !href.startsWith('http') && !href.startsWith('mailto')) href = `https://${href}`;
 
                             return (
                                 <a key={idx} href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--muted)', transition: 'color 0.3s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--muted)'}><i className={iconClass}></i></a>
