@@ -171,13 +171,13 @@ export default function Landing() {
                 <div style={{ height: '1px', background: 'linear-gradient(to right, transparent 0%, rgba(255,106,136,0.15) 50%, transparent 100%)' }}></div>
 
                 <Testimonials data={data?.testimonials || []} />
-                <Contact data={data?.contact || {}} />
+                <Contact data={data || {}} />
 
                 <a href={`https://wa.me/${data?.contact?.whatsapp?.replace(/[^0-9]/g, '') || '919343407099'}`} className="floating-whatsapp" target="_blank" rel="noopener noreferrer">
                     <i className="fa-brands fa-whatsapp"></i>
                 </a>
             </main>
-            <Footer data={data?.header} />
+            <Footer data={data || {}} />
         </>
     );
 }
