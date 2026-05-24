@@ -19,7 +19,12 @@ const defaultData = {
     contact: {
         whatsapp: '+91 9343407099',
         instagram: '@nandani_graphicano',
-        email: 'Patidarnandani761@gmail.com'
+        email: 'Patidarnandani761@gmail.com',
+        links: [
+            { platform: 'whatsapp', value: '+91 9343407099' },
+            { platform: 'instagram', value: '@nandani_graphicano' },
+            { platform: 'email', value: 'Patidarnandani761@gmail.com' }
+        ]
     },
     services: [
         { icon: "fa-pen-nib", title: "Logo Design", description: "Bespoke logos that capture your brand's essence perfectly." },
@@ -93,12 +98,10 @@ export function useSiteData() {
     useEffect(() => {
         async function fetchSiteData() {
             try {
-                // Add a cache buster (e.g. dummy neq filter) to force browsers to fetch fresh data
                 const { data: dbData, error } = await supabase
                     .from('site_data')
                     .select('data')
                     .eq('id', 1)
-                    .neq('id', Date.now()) // Cache buster
                     .single();
                 
                 if (error) throw error;
@@ -109,7 +112,20 @@ export function useSiteData() {
                     // Override each section ONLY if DB has non-empty data
                     if (db.hero && db.hero.title) merged.hero = { ...defaultData.hero, ...db.hero };
                     if (db.about && db.about.greeting) merged.about = { ...defaultData.about, ...db.about };
-                    if (db.contact) merged.contact = { ...defaultData.contact, ...db.contact };
+                    if (db.contact) {
+                        merged.contact = { ...defaultData.contact, ...db.contact };
+                        // If DB has links array, always use it (don't let default overwrite)
+                        if (db.contact.links && Array.isArray(db.contact.links)) {
+                            merged.contact.links = db.contact.links;
+                        } else {
+                            // Migrate old flat contact fields to links array
+                            const links = [];
+                            if (db.contact.whatsapp) links.push({ platform: 'whatsapp', value: db.contact.whatsapp });
+                            if (db.contact.instagram) links.push({ platform: 'instagram', value: db.contact.instagram });
+                            if (db.contact.email) links.push({ platform: 'email', value: db.contact.email });
+                            if (links.length > 0) merged.contact.links = links;
+                        }
+                    }
                     
                     // Services: only use DB if it has valid entries with titles
                     if (db.services && Array.isArray(db.services) && db.services.length > 0 && db.services[0].title) {

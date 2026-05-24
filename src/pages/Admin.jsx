@@ -169,19 +169,34 @@ export default function Admin() {
 
     const handleSave = async (section) => {
         setSaving(true);
-        let dataToSave = formData[section];
-        // For contact, also keep flat fields for backward compat
-        if (section === 'contact' && formData.contact.links) {
-            const flat = {};
-            formData.contact.links.forEach(link => {
-                flat[link.platform] = link.value;
-            });
-            dataToSave = { ...flat, links: formData.contact.links };
+        try {
+            // Always fetch latest data from DB before saving to prevent overwriting other sections
+            const { data: freshRow, error: fetchErr } = await supabase
+                .from('site_data')
+                .select('data')
+                .eq('id', 1)
+                .single();
+            
+            const freshData = (fetchErr || !freshRow?.data) ? siteData : { ...siteData, ...freshRow.data };
+
+            let dataToSave = formData[section];
+            // For contact, also keep flat fields for backward compat
+            if (section === 'contact' && formData.contact.links) {
+                const flat = {};
+                formData.contact.links.forEach(link => {
+                    flat[link.platform] = link.value;
+                });
+                dataToSave = { ...flat, links: formData.contact.links };
+            }
+            const updatedSiteData = { ...freshData, [section]: dataToSave };
+            const success = await updateData(updatedSiteData);
+            setSaving(false);
+            alert(success ? 'Saved successfully!' : 'Error saving. Please try again.');
+        } catch (err) {
+            console.error('Save error:', err);
+            setSaving(false);
+            alert('Error saving. Please try again.');
         }
-        const updatedSiteData = { ...siteData, [section]: dataToSave };
-        const success = await updateData(updatedSiteData);
-        setSaving(false);
-        alert(success ? 'Saved successfully!' : 'Error saving. Please try again.');
     };
 
     // Reorder helper
