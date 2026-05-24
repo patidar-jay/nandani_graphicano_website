@@ -170,33 +170,69 @@ export default function Admin() {
     const handleSave = async (section) => {
         setSaving(true);
         try {
-            // Always fetch latest data from DB before saving to prevent overwriting other sections
+            // Step 1: Fetch the CURRENT raw DB row directly (not stale in-memory siteData)
             const { data: freshRow, error: fetchErr } = await supabase
                 .from('site_data')
                 .select('data')
                 .eq('id', 1)
                 .single();
-            
-            const freshData = (fetchErr || !freshRow?.data) ? siteData : { ...siteData, ...freshRow.data };
 
+            if (fetchErr) {
+                console.error('[SAVE] Failed to fetch fresh data:', fetchErr);
+                throw fetchErr;
+            }
+
+            // Step 2: Start with the raw DB data
+            const dbData = freshRow?.data || {};
+
+            // Step 3: Prepare the section data to save
             let dataToSave = formData[section];
-            // For contact, also keep flat fields for backward compat
-            if (section === 'contact' && formData.contact.links) {
+            if (section === 'contact' && formData.contact?.links) {
                 const flat = {};
                 formData.contact.links.forEach(link => {
-                    flat[link.platform] = link.value;
+                    if (link.platform && link.value) {
+                        flat[link.platform] = link.value;
+                    }
                 });
                 dataToSave = { ...flat, links: formData.contact.links };
             }
-            const updatedSiteData = { ...freshData, [section]: dataToSave };
-            console.log('[DEBUG] Saving section:', section);
-            console.log('[DEBUG] dataToSave:', JSON.stringify(dataToSave));
-            console.log('[DEBUG] updatedSiteData.contact:', JSON.stringify(updatedSiteData.contact));
-            const success = await updateData(updatedSiteData);
+
+            // Step 4: Replace ONLY the changed section in the raw DB data
+            const newFullData = { ...dbData, [section]: dataToSave };
+
+            console.log('[SAVE] Section:', section);
+            console.log('[SAVE] Contact links being saved:', JSON.stringify(newFullData.contact?.links));
+
+            // Step 5: Save using updateData (handles upsert + in-memory state update)
+            const success = await updateData(newFullData);
+
+            if (!success) {
+                setSaving(false);
+                alert('Error saving. Please try again.');
+                return;
+            }
+
+            // Step 6: Verify the save worked by re-reading from DB
+            const { data: verifyRow } = await supabase
+                .from('site_data')
+                .select('data')
+                .eq('id', 1)
+                .single();
+
+            const savedLinks = verifyRow?.data?.contact?.links;
+            console.log('[SAVE] Verification - links in DB after save:', JSON.stringify(savedLinks));
+
+            if (section === 'contact' && (!savedLinks || savedLinks.length === 0)) {
+                console.error('[SAVE] VERIFICATION FAILED!');
+                alert('Error: Data did not persist. Check console for details.');
+                setSaving(false);
+                return;
+            }
+
             setSaving(false);
-            alert(success ? 'Saved successfully!' : 'Error saving. Please try again.');
+            alert('Saved successfully!');
         } catch (err) {
-            console.error('Save error:', err);
+            console.error('[SAVE] Error:', err);
             setSaving(false);
             alert('Error saving. Please try again.');
         }
