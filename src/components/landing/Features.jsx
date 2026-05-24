@@ -4,7 +4,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { useSiteData } from '../../hooks/useSiteData';
+
 export default function Features() {
+    const { data } = useSiteData();
     const sectionRef = useRef(null);
     const titleRef = useRef(null);
     const subtitleRef = useRef(null);
@@ -86,28 +89,7 @@ export default function Features() {
         return () => ctx.revert();
     }, []);
 
-    const features = [
-        {
-            icon: 'fa-solid fa-wand-magic-sparkles',
-            title: 'Creative Designs',
-            desc: 'Unique, out-of-the-box concepts that captivate.',
-        },
-        {
-            icon: 'fa-solid fa-bolt',
-            title: 'Fast Delivery',
-            desc: 'Rapid turnaround without compromising quality.',
-        },
-        {
-            icon: 'fa-solid fa-gem',
-            title: 'Modern Aesthetics',
-            desc: 'Staying ahead with ultra-premium design trends.',
-        },
-        {
-            icon: 'fa-solid fa-star',
-            title: 'Pro Quality',
-            desc: 'Pixel-perfect execution in every single detail.',
-        },
-    ];
+    const features = data?.features || [];
 
     return (
         <section
@@ -206,7 +188,7 @@ export default function Features() {
                                     opacity: 0,
                                 }}
                             >
-                                <i className={feature.icon} />
+                                <i className={feature.icon || 'fa-solid fa-star'} />
                             </div>
 
                             <h3

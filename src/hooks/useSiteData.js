@@ -44,6 +44,18 @@ const defaultData = {
         { text: "Incredible designer with brilliant aesthetic sense. Fast turnaround, super responsive communication, and the final results were absolutely stunning.", author: "Mark D.", company: "Elevate" },
         { text: "Working with Nandani was a game-changer for our startup. She understood our vision perfectly and delivered a brand identity that truly represents us.", author: "Priya K.", company: "GreenLeaf" }
     ],
+    tools: [
+        { icon: "fa-brands fa-adobe", name: "Adobe Creative Cloud" },
+        { icon: "fa-solid fa-pen-nib", name: "Illustrator" },
+        { icon: "fa-solid fa-image", name: "Photoshop" },
+        { icon: "fa-solid fa-paintbrush", name: "Canva" }
+    ],
+    features: [
+        { icon: 'fa-solid fa-wand-magic-sparkles', title: 'Creative Designs', desc: 'Unique, out-of-the-box concepts that captivate.' },
+        { icon: 'fa-solid fa-bolt', title: 'Fast Delivery', desc: 'Rapid turnaround without compromising quality.' },
+        { icon: 'fa-solid fa-gem', title: 'Modern Aesthetics', desc: 'Staying ahead with ultra-premium design trends.' },
+        { icon: 'fa-solid fa-star', title: 'Pro Quality', desc: 'Pixel-perfect execution in every single detail.' }
+    ],
     theme: {
         primaryColor: "#5A3A22",
         bgColor: "linear-gradient(to right top, #f5e4fb, #efdaf7, #e9d0f2, #e3c6ee, #ddbcea)"
@@ -110,6 +122,14 @@ export function useSiteData() {
                     // Projects: only use DB if entries have slugs
                     if (db.projects && Array.isArray(db.projects) && db.projects.length > 0 && db.projects[0].slug) {
                         merged.projects = db.projects;
+                    }
+
+                    if (db.tools && Array.isArray(db.tools) && db.tools.length > 0 && db.tools[0].name) {
+                        merged.tools = db.tools;
+                    }
+
+                    if (db.features && Array.isArray(db.features) && db.features.length > 0 && db.features[0].title) {
+                        merged.features = db.features;
                     }
 
                     if (db.theme) {

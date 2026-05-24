@@ -1,13 +1,9 @@
 import React from 'react';
+import { useSiteData } from '../../hooks/useSiteData';
 
 export default function Tools() {
-    const tools = [
-        { icon: "fa-solid fa-pen-nib", name: "Illustrator" },
-        { icon: "fa-solid fa-image", name: "Photoshop" },
-        { icon: "fa-brands fa-figma", name: "Figma" },
-        { icon: "fa-solid fa-video", name: "Premiere Pro" },
-        { icon: "fa-solid fa-wand-magic-sparkles", name: "Canva" }
-    ];
+    const { data } = useSiteData();
+    const tools = data?.tools || [];
 
     return (
         <section id="tools" style={{ padding: '3rem 5%', borderBottom: '1px solid var(--border)' }}>

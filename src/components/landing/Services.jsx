@@ -144,7 +144,7 @@ export default function Services({ data }) {
                                 position: 'relative',
                                 zIndex: 1
                             }}>
-                                <i className={`fa-solid ${srv.icon}`}></i>
+                                <i className={srv.icon ? (srv.icon.includes('fa-') ? srv.icon : `fa-solid ${srv.icon}`) : 'fa-solid fa-star'}></i>
                             </div>
 
                             {/* Title */}

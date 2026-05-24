@@ -202,6 +202,34 @@ export default function Admin() {
         setFormData({ ...formData, services: updated });
     };
 
+    // Features / Value Prop helpers
+    const updateFeature = (index, field, value) => {
+        const updated = [...(formData.features || [])];
+        updated[index] = { ...updated[index], [field]: value };
+        setFormData({ ...formData, features: updated });
+    };
+    const addFeature = () => {
+        setFormData({ ...formData, features: [...(formData.features || []), { icon: '', title: '', desc: '' }] });
+    };
+    const removeFeature = (index) => {
+        if (!confirm('Remove this feature?')) return;
+        setFormData({ ...formData, features: formData.features.filter((_, i) => i !== index) });
+    };
+
+    // Tools / Skills helpers
+    const updateTool = (index, field, value) => {
+        const updated = [...(formData.tools || [])];
+        updated[index] = { ...updated[index], [field]: value };
+        setFormData({ ...formData, tools: updated });
+    };
+    const addTool = () => {
+        setFormData({ ...formData, tools: [...(formData.tools || []), { icon: '', name: '' }] });
+    };
+    const removeTool = (index) => {
+        if (!confirm('Remove this tool?')) return;
+        setFormData({ ...formData, tools: formData.tools.filter((_, i) => i !== index) });
+    };
+
     // Testimonial helpers
     const updateTestimonial = (index, field, value) => {
         const updated = [...formData.testimonials];
@@ -274,6 +302,8 @@ export default function Admin() {
         { id: 'theme', icon: 'fa-solid fa-palette', label: 'Theme Colors' },
         { id: 'hero', icon: 'fa-solid fa-house', label: 'Hero Section' },
         { id: 'about', icon: 'fa-solid fa-user', label: 'About' },
+        { id: 'features', icon: 'fa-solid fa-star', label: 'Value Prop.' },
+        { id: 'tools', icon: 'fa-solid fa-wrench', label: 'Skills/Tools' },
         { id: 'services', icon: 'fa-solid fa-briefcase', label: 'Services' },
         { id: 'projects', icon: 'fa-solid fa-images', label: 'Projects' },
         { id: 'testimonials', icon: 'fa-solid fa-quote-left', label: 'Testimonials' },
@@ -464,6 +494,92 @@ export default function Admin() {
                                 <label className="form-label">Paragraph 2</label>
                                 <textarea className="form-input" rows="4" value={formData.about?.p2 || ''} onChange={e => setFormData({ ...formData, about: { ...formData.about, p2: e.target.value } })}></textarea>
                             </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ========== VALUE PROPOSITION (FEATURES) ========== */}
+                {activeTab === 'features' && (
+                    <div className="panel active">
+                        <div className="admin-section">
+                            <div className="admin-section-head">
+                                <h2>Value Proposition</h2>
+                                <button className="btn-admin" onClick={() => handleSave('features')} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+                            </div>
+                            <p className="form-hint" style={{ marginBottom: '1.5rem' }}>Edit the features shown in the Value Proposition section. Use Font Awesome icons.</p>
+                            <div className="services-grid-admin">
+                                {(formData.features || []).map((feature, idx) => (
+                                    <div key={idx} className="admin-card">
+                                        <div className="admin-card-header">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                                <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
+                                                <i className={`${feature.icon || 'fa-solid fa-star'}`} style={{ fontSize: '1.5rem', color: 'var(--accent)' }}></i>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                <button onClick={() => moveItem('features', idx, 'up')} disabled={idx === 0} style={{ background: 'none', border: 'none', cursor: idx === 0 ? 'not-allowed' : 'pointer', color: idx === 0 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Up"><i className="fa-solid fa-circle-arrow-up"></i></button>
+                                                <button onClick={() => moveItem('features', idx, 'down')} disabled={idx === (formData.features || []).length - 1} style={{ background: 'none', border: 'none', cursor: idx === (formData.features || []).length - 1 ? 'not-allowed' : 'pointer', color: idx === (formData.features || []).length - 1 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Down"><i className="fa-solid fa-circle-arrow-down"></i></button>
+                                                <button onClick={() => removeFeature(idx)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ff4444', fontSize: '1.2rem', marginLeft: '0.5rem' }} title="Remove"><i className="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Icon Class (e.g., fa-solid fa-bolt)</label>
+                                            <input type="text" className="form-input" value={feature.icon || ''} onChange={e => updateFeature(idx, 'icon', e.target.value)} placeholder="fa-solid fa-bolt" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Title</label>
+                                            <input type="text" className="form-input" value={feature.title || ''} onChange={e => updateFeature(idx, 'title', e.target.value)} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Description</label>
+                                            <textarea className="form-textarea" rows="2" value={feature.desc || ''} onChange={e => updateFeature(idx, 'desc', e.target.value)}></textarea>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <button className="btn-admin btn-outline" onClick={addFeature} style={{ marginTop: '1.5rem', width: '100%' }}>
+                                <i className="fa-solid fa-plus"></i> Add Value Proposition
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* ========== SKILLS / TOOLS ========== */}
+                {activeTab === 'tools' && (
+                    <div className="panel active">
+                        <div className="admin-section">
+                            <div className="admin-section-head">
+                                <h2>Skills & Tools</h2>
+                                <button className="btn-admin" onClick={() => handleSave('tools')} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+                            </div>
+                            <p className="form-hint" style={{ marginBottom: '1.5rem' }}>Edit the skills/tools ticker items.</p>
+                            <div className="services-grid-admin">
+                                {(formData.tools || []).map((tool, idx) => (
+                                    <div key={idx} className="admin-card">
+                                        <div className="admin-card-header">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                                <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
+                                                <i className={`${tool.icon || 'fa-solid fa-star'}`} style={{ fontSize: '1.5rem', color: 'var(--accent)' }}></i>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                <button onClick={() => moveItem('tools', idx, 'up')} disabled={idx === 0} style={{ background: 'none', border: 'none', cursor: idx === 0 ? 'not-allowed' : 'pointer', color: idx === 0 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Up"><i className="fa-solid fa-circle-arrow-up"></i></button>
+                                                <button onClick={() => moveItem('tools', idx, 'down')} disabled={idx === (formData.tools || []).length - 1} style={{ background: 'none', border: 'none', cursor: idx === (formData.tools || []).length - 1 ? 'not-allowed' : 'pointer', color: idx === (formData.tools || []).length - 1 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Down"><i className="fa-solid fa-circle-arrow-down"></i></button>
+                                                <button onClick={() => removeTool(idx)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ff4444', fontSize: '1.2rem', marginLeft: '0.5rem' }} title="Remove"><i className="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Icon Class (e.g., fa-brands fa-adobe)</label>
+                                            <input type="text" className="form-input" value={tool.icon || ''} onChange={e => updateTool(idx, 'icon', e.target.value)} placeholder="fa-brands fa-adobe" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Tool Name</label>
+                                            <input type="text" className="form-input" value={tool.name || ''} onChange={e => updateTool(idx, 'name', e.target.value)} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <button className="btn-admin btn-outline" onClick={addTool} style={{ marginTop: '1.5rem', width: '100%' }}>
+                                <i className="fa-solid fa-plus"></i> Add Tool/Skill
+                            </button>
                         </div>
                     </div>
                 )}
