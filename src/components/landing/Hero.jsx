@@ -109,12 +109,9 @@ export default function Hero({ data }) {
         <section
             ref={sectionRef}
             id="hero"
+            className="hero-section"
             style={{
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
                 position: 'relative',
-                padding: '0 5%',
                 overflow: 'hidden',
             }}
         >
