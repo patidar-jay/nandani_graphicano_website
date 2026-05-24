@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;600;800&display=swap');
 
 :root {
-    --bg: #FAFAFA;
-    --card: #FFFFFF;
+    --bg: linear-gradient(to right top, #f5e4fb, #efdaf7, #e9d0f2, #e3c6ee, #ddbcea);
+    --card: linear-gradient(to right top, #f5e4fb, #efdaf7, #e9d0f2, #e3c6ee, #ddbcea);
     --text: #2C3E50;
     --muted: #7F8C8D;
     --accent: #FF9A8B;
@@ -33,17 +33,11 @@ html {
 
 body {
     font-family: var(--font-sans);
-    background-color: var(--bg);
+    background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
     line-height: 1.6;
     cursor: none; /* Hide default cursor for custom cursor */
-    /* Add a subtle global soft background gradient mesh */
-    background-image:
-        radial-gradient(at 0% 0%, hsla(353,100%,73%,0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, hsla(28,100%,74%,0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, hsla(353,100%,73%,0.08) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, hsla(28,100%,74%,0.08) 0px, transparent 50%);
     background-attachment: fixed;
 }
 

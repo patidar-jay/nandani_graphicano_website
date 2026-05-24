@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer({ data }) {
     return (
-        <footer style={{ padding: '4rem 5%', background: '#FFFFFF', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
+        <footer style={{ padding: '4rem 5%', background: 'var(--bg)', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
                 <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                     <span style={{ color: 'var(--text)', fontSize: '2.5rem', fontWeight: 600, fontFamily: 'var(--font-heading)' }}>
