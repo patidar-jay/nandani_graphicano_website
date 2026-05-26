@@ -276,6 +276,24 @@ export default function Admin() {
         setFormData({ ...formData, features: formData.features.filter((_, i) => i !== index) });
     };
 
+    // Stats helpers
+    const updateStat = (index, field, value) => {
+        const updated = [...(formData.stats || [])];
+        // Ensure values are numbers if they should be
+        if (field === 'value') {
+            value = value === '' ? 0 : Number(value);
+        }
+        updated[index] = { ...updated[index], [field]: value };
+        setFormData({ ...formData, stats: updated });
+    };
+    const addStat = () => {
+        setFormData({ ...formData, stats: [...(formData.stats || []), { label: '', value: 0, suffix: '' }] });
+    };
+    const removeStat = (index) => {
+        if (!confirm('Remove this stat?')) return;
+        setFormData({ ...formData, stats: formData.stats.filter((_, i) => i !== index) });
+    };
+
     // Tools / Skills helpers
     const updateTool = (index, field, value) => {
         const updated = [...(formData.tools || [])];
@@ -362,6 +380,7 @@ export default function Admin() {
         { id: 'theme', icon: 'fa-solid fa-palette', label: 'Theme Colors' },
         { id: 'hero', icon: 'fa-solid fa-house', label: 'Hero Section' },
         { id: 'about', icon: 'fa-solid fa-user', label: 'About' },
+        { id: 'stats', icon: 'fa-solid fa-chart-pie', label: 'Statistics' },
         { id: 'features', icon: 'fa-solid fa-star', label: 'Value Prop.' },
         { id: 'tools', icon: 'fa-solid fa-wrench', label: 'Skills/Tools' },
         { id: 'services', icon: 'fa-solid fa-briefcase', label: 'Services' },
@@ -554,6 +573,52 @@ export default function Admin() {
                                 <label className="form-label">Paragraph 2</label>
                                 <textarea className="form-input" rows="4" value={formData.about?.p2 || ''} onChange={e => setFormData({ ...formData, about: { ...formData.about, p2: e.target.value } })}></textarea>
                             </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ========== STATS ========== */}
+                {activeTab === 'stats' && (
+                    <div className="panel active">
+                        <div className="admin-section">
+                            <div className="admin-section-head">
+                                <h2>Statistics</h2>
+                                <button className="btn-admin" onClick={() => handleSave('stats')} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+                            </div>
+                            <p className="form-hint" style={{ marginBottom: '1.5rem' }}>Edit the animated statistics shown on the landing page.</p>
+                            <div className="services-grid-admin">
+                                {(formData.stats || []).map((stat, idx) => (
+                                    <div key={idx} className="admin-card">
+                                        <div className="admin-card-header">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                                <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                <button onClick={() => moveItem('stats', idx, 'up')} disabled={idx === 0} style={{ background: 'none', border: 'none', cursor: idx === 0 ? 'not-allowed' : 'pointer', color: idx === 0 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Up"><i className="fa-solid fa-circle-arrow-up"></i></button>
+                                                <button onClick={() => moveItem('stats', idx, 'down')} disabled={idx === (formData.stats || []).length - 1} style={{ background: 'none', border: 'none', cursor: idx === (formData.stats || []).length - 1 ? 'not-allowed' : 'pointer', color: idx === (formData.stats || []).length - 1 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Down"><i className="fa-solid fa-circle-arrow-down"></i></button>
+                                                <button onClick={() => removeStat(idx)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ff4444', fontSize: '1.2rem', marginLeft: '0.5rem' }} title="Remove"><i className="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Label (e.g. Happy Clients)</label>
+                                            <input type="text" className="form-input" value={stat.label || ''} onChange={e => updateStat(idx, 'label', e.target.value)} />
+                                        </div>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                            <div className="form-group">
+                                                <label className="form-label">Value (Number)</label>
+                                                <input type="number" className="form-input" value={stat.value || 0} onChange={e => updateStat(idx, 'value', e.target.value)} />
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="form-label">Suffix (e.g. +, %)</label>
+                                                <input type="text" className="form-input" value={stat.suffix || ''} onChange={e => updateStat(idx, 'suffix', e.target.value)} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <button className="btn-admin btn-outline" onClick={addStat} style={{ marginTop: '1.5rem', width: '100%' }}>
+                                <i className="fa-solid fa-plus"></i> Add Statistic
+                            </button>
                         </div>
                     </div>
                 )}

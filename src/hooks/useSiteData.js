@@ -61,6 +61,11 @@ const defaultData = {
         { icon: 'fa-solid fa-gem', title: 'Modern Aesthetics', desc: 'Staying ahead with ultra-premium design trends.' },
         { icon: 'fa-solid fa-star', title: 'Pro Quality', desc: 'Pixel-perfect execution in every single detail.' }
     ],
+    stats: [
+        { label: 'Happy Clients', value: 50, suffix: '+' },
+        { label: 'Projects Completed', value: 150, suffix: '+' },
+        { label: 'Satisfaction Rate', value: 99, suffix: '%' }
+    ],
     theme: {
         primaryColor: "#5A3A22",
         bgColor: "linear-gradient(to right top, #f5e4fb, #efdaf7, #e9d0f2, #e3c6ee, #ddbcea)"
@@ -140,6 +145,11 @@ export function useSiteData() {
                     // Projects: only use DB if entries have slugs
                     if (db.projects && Array.isArray(db.projects) && db.projects.length > 0 && db.projects[0].slug) {
                         merged.projects = db.projects;
+                    }
+
+                    // Stats: only use DB if entries have labels
+                    if (db.stats && Array.isArray(db.stats) && db.stats.length > 0 && db.stats[0].label) {
+                        merged.stats = db.stats;
                     }
 
                     if (db.tools && Array.isArray(db.tools) && db.tools.length > 0 && db.tools[0].name) {

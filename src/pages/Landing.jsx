@@ -158,7 +158,7 @@ export default function Landing() {
                 {/* ═══ Visual Divider ═══ */}
                 <div style={{ height: '1px', background: 'linear-gradient(to right, transparent 0%, rgba(255,106,136,0.15) 50%, transparent 100%)' }}></div>
 
-                <Stats />
+                <Stats data={data?.stats || []} />
                 <Portfolio data={data?.projects || []} />
 
                 {/* ═══ Visual Divider ═══ */}

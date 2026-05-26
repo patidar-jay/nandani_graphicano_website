@@ -4,11 +4,28 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Stats() {
+export default function Stats({ data }) {
     const sectionRef = useRef(null);
     const numsRef = useRef([]);
     const cardsRef = useRef([]);
     const underlinesRef = useRef([]);
+
+    // We no longer need to rely purely on hardcoded stats since they are passed as props, 
+    // but we can provide a fallback just in case.
+    const defaultStats = [
+        { label: 'Happy Clients', value: 50, suffix: '+' },
+        { label: 'Projects Completed', value: 150, suffix: '+' },
+        { label: 'Satisfaction Rate', value: 99, suffix: '%' },
+    ];
+    
+    const displayStats = data && data.length > 0 ? data : defaultStats;
+
+    // Reset refs on data change so we don't hold stale element references
+    useEffect(() => {
+        numsRef.current = numsRef.current.slice(0, displayStats.length);
+        cardsRef.current = cardsRef.current.slice(0, displayStats.length);
+        underlinesRef.current = underlinesRef.current.slice(0, displayStats.length);
+    }, [displayStats]);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -68,13 +85,7 @@ export default function Stats() {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, []);
-
-    const stats = [
-        { label: 'Happy Clients', value: 50, suffix: '+' },
-        { label: 'Projects Completed', value: 150, suffix: '+' },
-        { label: 'Satisfaction Rate', value: 99, suffix: '%' },
-    ];
+    }, [displayStats]);
 
     return (
         <section
@@ -118,7 +129,7 @@ export default function Stats() {
                     zIndex: 1,
                 }}
             >
-                {stats.map((stat, index) => (
+                {displayStats.map((stat, index) => (
                     <div
                         key={index}
                         ref={(el) => (cardsRef.current[index] = el)}
