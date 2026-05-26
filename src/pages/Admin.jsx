@@ -128,16 +128,22 @@ export default function Admin() {
             const browsers = {};
             uniqueSessions.forEach(r => { browsers[r.browser || 'unknown'] = (browsers[r.browser || 'unknown'] || 0) + 1; });
             
-            // Top sections by total view time
+            // Top sections and projects by total view time
             const sectionTotals = {};
+            const projectTotals = {};
             uniqueSessions.forEach(r => {
                 if (r.sections_viewed && typeof r.sections_viewed === 'object') {
                     Object.entries(r.sections_viewed).forEach(([section, time]) => {
-                        sectionTotals[section] = (sectionTotals[section] || 0) + (time || 0);
+                        if (section.startsWith('Project - ')) {
+                            projectTotals[section.replace('Project - ', '')] = (projectTotals[section.replace('Project - ', '')] || 0) + (time || 0);
+                        } else {
+                            sectionTotals[section] = (sectionTotals[section] || 0) + (time || 0);
+                        }
                     });
                 }
             });
             const topSections = Object.entries(sectionTotals).sort((a, b) => b[1] - a[1]).slice(0, 8);
+            const topProjects = Object.entries(projectTotals).sort((a, b) => b[1] - a[1]).slice(0, 8);
             
             // Today's visitors
             const today = new Date().toDateString();
@@ -164,7 +170,7 @@ export default function Admin() {
             // Recent 10 sessions
             const recentSessions = sortedUniqueSessions.slice(0, 10);
             
-            setAnalytics({ uniqueVisitors, totalSessions, returningCount, newCount, avgDuration, devices, browsers, topSections, todayVisits, recentSessions, topLocations });
+            setAnalytics({ uniqueVisitors, totalSessions, returningCount, newCount, avgDuration, devices, browsers, topSections, topProjects, todayVisits, recentSessions, topLocations });
         } catch (err) {
             console.error('Analytics error:', err);
             setAnalytics(null);
@@ -1156,6 +1162,33 @@ export default function Admin() {
                                                             #{idx + 1}
                                                         </div>
                                                         <div style={{ fontWeight: 600, color: 'var(--text)', textTransform: 'capitalize', fontSize: '0.95rem' }}>{section}</div>
+                                                        <div style={{ fontSize: '0.85rem', color: 'var(--accent)', marginTop: '0.3rem' }}>
+                                                            {totalTime > 60 ? `${Math.floor(totalTime / 60)}m ${totalTime % 60}s` : `${totalTime}s`} total
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Top Projects */}
+                                    {analytics.topProjects && analytics.topProjects.length > 0 && (
+                                        <div className="admin-card" style={{ marginTop: '1.5rem' }}>
+                                            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', color: 'var(--text)', marginBottom: '1.2rem' }}>
+                                                <i className="fa-solid fa-briefcase" style={{ color: 'var(--accent)', marginRight: '0.5rem' }}></i> Most Viewed Projects
+                                            </h3>
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem' }}>
+                                                {analytics.topProjects.map(([project, totalTime], idx) => (
+                                                    <div key={project} style={{
+                                                        background: idx === 0 ? 'rgba(255,154,139,0.06)' : 'var(--bg)',
+                                                        border: `1px solid ${idx === 0 ? 'rgba(255,106,136,0.2)' : 'var(--border)'}`,
+                                                        borderRadius: '10px', padding: '1rem', textAlign: 'center'
+                                                    }}>
+                                                        <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1.5px', color: 'var(--muted)', marginBottom: '0.4rem' }}>
+                                                            {idx === 0 && <><i className="fa-solid fa-crown" style={{ color: '#f59e0b' }}></i>{' '}</>}
+                                                            #{idx + 1}
+                                                        </div>
+                                                        <div style={{ fontWeight: 600, color: 'var(--text)', textTransform: 'capitalize', fontSize: '0.95rem' }}>{project}</div>
                                                         <div style={{ fontSize: '0.85rem', color: 'var(--accent)', marginTop: '0.3rem' }}>
                                                             {totalTime > 60 ? `${Math.floor(totalTime / 60)}m ${totalTime % 60}s` : `${totalTime}s`} total
                                                         </div>
