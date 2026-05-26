@@ -135,7 +135,7 @@ export default function Admin() {
             
             // Location breakdown
             const locations = {};
-            rows.forEach(r => {
+            uniqueSessions.forEach(r => {
                 const country = r.country || 'Unknown';
                 const city = r.city || 'Unknown';
                 const region = r.region || 'Unknown';
@@ -148,8 +148,11 @@ export default function Admin() {
                 .sort((a, b) => b[1].total - a[1].total)
                 .slice(0, 10);
             
+            // Sort uniqueSessions by created_at DESC to ensure Recent Visits are actually recent
+            const sortedUniqueSessions = [...uniqueSessions].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
             // Recent 10 sessions
-            const recentSessions = rows.slice(0, 10);
+            const recentSessions = sortedUniqueSessions.slice(0, 10);
             
             setAnalytics({ uniqueVisitors, totalSessions, returningCount, newCount, avgDuration, devices, browsers, topSections, todayVisits, recentSessions, topLocations });
         } catch (err) {
