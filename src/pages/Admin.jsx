@@ -101,10 +101,20 @@ export default function Admin() {
             });
             const uniqueSessions = Object.values(sessionMap);
             
-            const uniqueVisitors = new Set(uniqueSessions.map(r => r.visitor_id)).size;
+            // Calculate Visitors and Users correctly based on visitor_id
+            const visitorSessions = {};
+            uniqueSessions.forEach(r => {
+                visitorSessions[r.visitor_id] = (visitorSessions[r.visitor_id] || 0) + 1;
+            });
+            
+            const uniqueVisitors = Object.keys(visitorSessions).length;
             const totalSessions = uniqueSessions.length;
-            const returningCount = uniqueSessions.filter(r => r.is_returning).length;
-            const newCount = totalSessions - returningCount;
+            
+            // New Users = Number of unique visitors (everyone is a new user once)
+            const newCount = uniqueVisitors; 
+            
+            // Returning Users = Number of visitors who have more than 1 session
+            const returningCount = Object.values(visitorSessions).filter(count => count > 1).length;
             
             // Average session duration (exclude 0-duration pings)
             const withDuration = uniqueSessions.filter(r => r.session_duration > 0);
