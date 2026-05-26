@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import CustomCursor from '../components/common/CustomCursor';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,65 +49,69 @@ const projectsData = {
                 title: 'Packaging Design',
                 subtitle: 'Product packaging designed to feel premium, organic, and shelf-ready.',
                 images: [
-                    { src: '/assets/images/portfolio/advatika 4.jpeg', alt: 'Advaita Packaging Layout Design' },
-                    { src: '/assets/images/portfolio/advatika 5.jpeg', alt: 'Oyster Mushroom Spread Jar' },
-                    { src: '/assets/images/portfolio/advatika 6.jpeg', alt: 'Oyster Mushroom Pickle Jar' }
+                    '/assets/images/portfolio/advatika 4.jpeg',
+                    '/assets/images/portfolio/advatika 5.jpeg'
                 ]
+            },
+            {
+                type: 'full-image',
+                image: '/assets/images/portfolio/advatika 6.jpeg',
+                alt: 'Advaita Agronics Brand Pattern'
             }
         ],
         results: [
-            { value: '100%', label: 'Brand Consistency Across Products' },
-            { value: '5+', label: 'Product SKUs Designed' },
-            { value: 'Retail', label: 'Shelf-Ready Packaging' }
+            { value: '100%', label: 'Organic Identity' },
+            { value: '3+', label: 'Product Lines' },
+            { value: 'Premium', label: 'Market Positioning' }
         ]
     },
-    'premium-identity': {
+    'social-media-post': {
         label: '02',
-        category: 'Logo Design',
-        title: 'Premium',
-        titleHighlight: 'Identity',
-        intro: 'A bold, minimalist logo system crafted for a modern brand looking to establish authority in their industry.',
+        category: 'Social Media',
+        title: 'Social',
+        titleHighlight: 'Media',
+        intro: 'Engaging, high-conversion social media post designs tailored for brand awareness and audience interaction.',
         client: 'Confidential',
         year: '2024',
-        industry: 'Technology',
-        tags: ['Logo Design', 'Brand Mark', 'Typography'],
+        industry: 'Marketing',
+        tags: ['Instagram', 'Facebook', 'Content Design', 'Engagement'],
+        heroImage: '/assets/images/portfolio/social-1.png',
+        sections: [],
+        results: [
+            { value: '3x', label: 'Engagement Rate' },
+            { value: '50K+', label: 'Impressions' },
+            { value: 'Viral', label: 'Content Reach' }
+        ]
+    },
+    'premium-logo': {
+        label: '03',
+        category: 'Brand Identity',
+        title: 'Premium',
+        titleHighlight: 'Logo',
+        intro: 'A minimal, timeless, and versatile logo design crafted to establish a strong brand presence.',
+        client: 'Confidential',
+        year: '2024',
+        industry: 'Luxury',
+        tags: ['Logo Design', 'Typography', 'Minimalism'],
         heroImage: '/assets/images/portfolio/logo-1.png',
         sections: [],
         results: [
-            { value: '100%', label: 'Client Satisfaction' },
-            { value: '1', label: 'Concept Approved' },
-            { value: 'Modern', label: 'Clean Aesthetic' }
-        ]
-    },
-    'minimalist-mark': {
-        label: '03',
-        category: 'Logo Design',
-        title: 'Minimalist',
-        titleHighlight: 'Mark',
-        intro: 'A refined and elegant logo that speaks volumes through simplicity.',
-        client: 'Confidential',
-        year: '2024',
-        industry: 'Lifestyle',
-        tags: ['Logo Design', 'Minimalism', 'Visual Identity'],
-        heroImage: '/assets/images/portfolio/logo-2.png',
-        sections: [],
-        results: [
-            { value: '100%', label: 'Brand Recognition' },
-            { value: 'Scalable', label: 'Works at Any Size' },
-            { value: 'Timeless', label: 'Design Approach' }
+            { value: 'Timeless', label: 'Design Approach' },
+            { value: 'Multi', label: 'Platform Versatility' },
+            { value: '100%', label: 'Brand Recognition' }
         ]
     },
     'brand-guidelines': {
         label: '04',
-        category: 'Branding',
+        category: 'Brand Strategy',
         title: 'Brand',
         titleHighlight: 'Guidelines',
-        intro: 'A comprehensive brand guidelines document ensuring consistency across all touchpoints.',
+        intro: 'Comprehensive brand guidelines ensuring consistency across all visual touchpoints and marketing channels.',
         client: 'Confidential',
         year: '2024',
         industry: 'Corporate',
-        tags: ['Brand Guidelines', 'Visual System', 'Typography', 'Color Palette'],
-        heroImage: '/assets/images/portfolio/branding-1.png',
+        tags: ['Brand Book', 'Typography', 'Color Palette', 'Rules'],
+        heroImage: '/assets/images/portfolio/guidelines-1.png',
         sections: [],
         results: [
             { value: '50+', label: 'Pages of Guidelines' },
@@ -158,32 +163,32 @@ const projectsData = {
         intro: 'A cohesive Instagram grid design that elevates the brand\'s social media presence.',
         client: 'Confidential',
         year: '2024',
-        industry: 'Social Media',
-        tags: ['Social Media', 'Instagram', 'Content Design'],
-        heroImage: '/assets/images/portfolio/social-1.png',
+        industry: 'Lifestyle',
+        tags: ['Instagram', 'Grid Design', 'Aesthetics'],
+        heroImage: '/assets/images/portfolio/grid-1.png',
         sections: [],
         results: [
-            { value: '3x', label: 'Engagement Boost' },
-            { value: 'Cohesive', label: 'Visual Identity' },
-            { value: '20+', label: 'Templates Created' }
+            { value: '9', label: 'Post Layout' },
+            { value: 'Seamless', label: 'Visual Flow' },
+            { value: 'Aesthetic', label: 'Brand Vibe' }
         ]
     },
-    'facebook-campaign': {
+    'product-packaging': {
         label: '08',
-        category: 'Social Media',
-        title: 'Facebook',
-        titleHighlight: 'Campaign',
-        intro: 'A high-converting Facebook ad campaign with striking visuals and clear messaging.',
+        category: 'Packaging',
+        title: 'Product',
+        titleHighlight: 'Packaging',
+        intro: 'Innovative and sustainable product packaging designed to stand out on the shelf.',
         client: 'Confidential',
         year: '2024',
-        industry: 'Digital Marketing',
-        tags: ['Social Media', 'Facebook Ads', 'Campaign Design'],
-        heroImage: '/assets/images/portfolio/social-2.png',
+        industry: 'Retail',
+        tags: ['Packaging', '3D Mockup', 'Print Design'],
+        heroImage: '/assets/images/portfolio/packaging-1.png',
         sections: [],
         results: [
-            { value: 'High', label: 'Click-Through Rate' },
-            { value: '5+', label: 'Ad Variations' },
-            { value: 'Optimized', label: 'For Conversions' }
+            { value: 'Eco', label: 'Friendly Materials' },
+            { value: 'Bold', label: 'Shelf Presence' },
+            { value: '100%', label: 'Print Ready' }
         ]
     },
     'web-template': {
@@ -227,6 +232,8 @@ const projectsData = {
 export default function ProjectDetail() {
     const { slug } = useParams();
     const project = projectsData[slug];
+
+    useAnalytics();
 
     const heroTextRef = useRef(null);
     const heroImgRef = useRef(null);
@@ -280,7 +287,7 @@ export default function ProjectDetail() {
         <>
             <CustomCursor />
             <Header />
-            <main style={{ paddingTop: '100px' }}>
+            <main id={`Project - ${project.title}`} style={{ paddingTop: '100px' }}>
 
                 {/* Back Navigation */}
                 <section style={{ padding: '2rem 5%' }}>

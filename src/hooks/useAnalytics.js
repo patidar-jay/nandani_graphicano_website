@@ -19,21 +19,33 @@ function getBrowser() {
     return 'Other';
 }
 
-function getVisitorId() {
-    let id = localStorage.getItem('ng_visitor_id');
-    if (!id) {
-        id = 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 8);
-        localStorage.setItem('ng_visitor_id', id);
-    }
-    return id;
-}
-
-function isReturningVisitor() {
-    const lastVisit = localStorage.getItem('ng_last_visit');
+function getSessionInfo() {
+    let visitorId = localStorage.getItem('ng_visitor_id');
+    const lastVisitStr = localStorage.getItem('ng_last_visit');
+    let sessionId = localStorage.getItem('ng_session_id');
+    
     const now = Date.now();
+    let isReturning = false;
+    
+    if (!visitorId) {
+        visitorId = 'v_' + now.toString(36) + '_' + Math.random().toString(36).substr(2, 8);
+        localStorage.setItem('ng_visitor_id', visitorId);
+        // Brand new visitor
+    } else {
+        // Has visited before
+        isReturning = true;
+    }
+    
+    // Check if new session (no session id, or last visit was > 30 mins ago)
+    if (!sessionId || !lastVisitStr || (now - parseInt(lastVisitStr)) > 30 * 60 * 1000) {
+        sessionId = 's_' + now.toString(36) + '_' + Math.random().toString(36).substr(2, 6);
+        localStorage.setItem('ng_session_id', sessionId);
+    }
+    
+    // Update last visit time
     localStorage.setItem('ng_last_visit', now.toString());
-    if (!lastVisit) return false;
-    return (now - parseInt(lastVisit)) > 30 * 60 * 1000;
+    
+    return { visitorId, sessionId, isReturning };
 }
 
 // Fetch user location from IP (no permission needed, silent)
@@ -49,7 +61,6 @@ async function fetchLocation() {
         };
     } catch {
         try {
-            // Fallback API
             const res = await fetch('https://ipinfo.io/json?token=');
             if (!res.ok) throw new Error('Failed');
             const data = await res.json();
@@ -69,22 +80,20 @@ export function useAnalytics() {
     const sectionsTime = useRef({});
     const activeSections = useRef(new Set());
     const lastTick = useRef(Date.now());
-    const sessionId = useRef('s_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6));
     const sent = useRef(false);
     const locationData = useRef({ country: 'Unknown', region: 'Unknown', city: 'Unknown' });
+    const sessionInfo = useRef(null);
 
     useEffect(() => {
-        const visitorId = getVisitorId();
-        const returning = isReturningVisitor();
+        sessionInfo.current = getSessionInfo();
+        const { visitorId, sessionId, isReturning } = sessionInfo.current;
         const device = getDeviceType();
         const browser = getBrowser();
 
-        // Fetch location silently (no popup, IP-based)
         fetchLocation().then(loc => {
             locationData.current = loc;
         });
 
-        // Track which sections are visible
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const id = entry.target.id;
@@ -98,12 +107,11 @@ export function useAnalytics() {
         }, { threshold: 0.3 });
 
         setTimeout(() => {
-            document.querySelectorAll('section[id], div[id]').forEach(el => {
+            document.querySelectorAll('section[id], div[id], main[id]').forEach(el => {
                 if (el.id) observer.observe(el);
             });
         }, 1000);
 
-        // Tick every second to accumulate time per section
         const ticker = setInterval(() => {
             const now = Date.now();
             const delta = (now - lastTick.current) / 1000;
@@ -113,7 +121,6 @@ export function useAnalytics() {
             });
         }, 1000);
 
-        // Send analytics on page unload
         const sendAnalytics = () => {
             if (sent.current) return;
             sent.current = true;
@@ -128,10 +135,10 @@ export function useAnalytics() {
 
             const payload = {
                 visitor_id: visitorId,
-                session_id: sessionId.current,
+                session_id: sessionId,
                 device,
                 browser,
-                is_returning: returning,
+                is_returning: isReturning,
                 session_duration: duration,
                 sections_viewed: sections,
                 page_path: window.location.pathname,
@@ -141,7 +148,6 @@ export function useAnalytics() {
                 city: loc.city
             };
 
-            // Use sendBeacon for reliable delivery
             const url = `https://lcudchwoimjpatbxgsho.supabase.co/rest/v1/page_analytics`;
             const headers = {
                 'apikey': 'sb_publishable_F1v0RXWHEr-MCYlJaue4SA_SVjYHHAd',
@@ -151,7 +157,6 @@ export function useAnalytics() {
 
             try {
                 const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-                // sendBeacon doesn't support custom headers, use fetch with keepalive
                 fetch(url, {
                     method: 'POST',
                     headers,
@@ -163,28 +168,6 @@ export function useAnalytics() {
             }
         };
 
-        // Initial ping after 3 seconds
-        const initialPing = setTimeout(async () => {
-            try {
-                await supabase.from('page_analytics').insert([{
-                    visitor_id: visitorId,
-                    session_id: sessionId.current,
-                    device,
-                    browser,
-                    is_returning: returning,
-                    session_duration: 0,
-                    sections_viewed: {},
-                    page_path: window.location.pathname,
-                    screen_width: window.innerWidth,
-                    country: locationData.current.country,
-                    region: locationData.current.region,
-                    city: locationData.current.city
-                }]);
-            } catch (e) {
-                console.log('Analytics table not ready:', e.message);
-            }
-        }, 3000);
-
         window.addEventListener('beforeunload', sendAnalytics);
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') sendAnalytics();
@@ -192,7 +175,6 @@ export function useAnalytics() {
 
         return () => {
             clearInterval(ticker);
-            clearTimeout(initialPing);
             observer.disconnect();
             window.removeEventListener('beforeunload', sendAnalytics);
         };

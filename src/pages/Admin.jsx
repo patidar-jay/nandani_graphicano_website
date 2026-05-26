@@ -77,26 +77,50 @@ export default function Admin() {
             if (error) throw error;
             
             const rows = data || [];
-            const uniqueVisitors = new Set(rows.map(r => r.visitor_id)).size;
-            const totalSessions = rows.length;
-            const returningCount = rows.filter(r => r.is_returning).length;
+            
+            // Group by session_id to prevent double counting
+            const sessionMap = {};
+            rows.forEach(r => {
+                const sid = r.session_id;
+                if (!sessionMap[sid]) {
+                    sessionMap[sid] = { ...r, sections_viewed: { ...(r.sections_viewed || {}) } };
+                } else {
+                    // Sum duration
+                    sessionMap[sid].session_duration += (r.session_duration || 0);
+                    
+                    // Sum sections viewed
+                    if (r.sections_viewed && typeof r.sections_viewed === 'object') {
+                        Object.entries(r.sections_viewed).forEach(([sec, time]) => {
+                            sessionMap[sid].sections_viewed[sec] = (sessionMap[sid].sections_viewed[sec] || 0) + (time || 0);
+                        });
+                    }
+                    
+                    // Keep returning status if any row says returning
+                    sessionMap[sid].is_returning = sessionMap[sid].is_returning || r.is_returning;
+                }
+            });
+            const uniqueSessions = Object.values(sessionMap);
+            
+            const uniqueVisitors = new Set(uniqueSessions.map(r => r.visitor_id)).size;
+            const totalSessions = uniqueSessions.length;
+            const returningCount = uniqueSessions.filter(r => r.is_returning).length;
             const newCount = totalSessions - returningCount;
             
             // Average session duration (exclude 0-duration pings)
-            const withDuration = rows.filter(r => r.session_duration > 0);
+            const withDuration = uniqueSessions.filter(r => r.session_duration > 0);
             const avgDuration = withDuration.length > 0 ? Math.round(withDuration.reduce((s, r) => s + r.session_duration, 0) / withDuration.length) : 0;
             
             // Device breakdown
             const devices = {};
-            rows.forEach(r => { devices[r.device || 'unknown'] = (devices[r.device || 'unknown'] || 0) + 1; });
+            uniqueSessions.forEach(r => { devices[r.device || 'unknown'] = (devices[r.device || 'unknown'] || 0) + 1; });
             
             // Browser breakdown  
             const browsers = {};
-            rows.forEach(r => { browsers[r.browser || 'unknown'] = (browsers[r.browser || 'unknown'] || 0) + 1; });
+            uniqueSessions.forEach(r => { browsers[r.browser || 'unknown'] = (browsers[r.browser || 'unknown'] || 0) + 1; });
             
             // Top sections by total view time
             const sectionTotals = {};
-            rows.forEach(r => {
+            uniqueSessions.forEach(r => {
                 if (r.sections_viewed && typeof r.sections_viewed === 'object') {
                     Object.entries(r.sections_viewed).forEach(([section, time]) => {
                         sectionTotals[section] = (sectionTotals[section] || 0) + (time || 0);
@@ -107,7 +131,7 @@ export default function Admin() {
             
             // Today's visitors
             const today = new Date().toDateString();
-            const todayVisits = rows.filter(r => new Date(r.created_at).toDateString() === today).length;
+            const todayVisits = uniqueSessions.filter(r => new Date(r.created_at).toDateString() === today).length;
             
             // Location breakdown
             const locations = {};
