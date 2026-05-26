@@ -177,6 +177,7 @@ export function useAnalytics() {
             clearInterval(ticker);
             observer.disconnect();
             window.removeEventListener('beforeunload', sendAnalytics);
+            sendAnalytics(); // Send data when component unmounts (route change)
         };
     }, []);
 }
