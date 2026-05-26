@@ -104,7 +104,7 @@ export function useAnalytics() {
                     activeSections.current.delete(id);
                 }
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0 });
 
         setTimeout(() => {
             document.querySelectorAll('section[id], div[id], main[id]').forEach(el => {
