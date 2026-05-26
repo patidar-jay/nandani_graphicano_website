@@ -66,6 +66,13 @@ const defaultData = {
         { label: 'Projects Completed', value: 150, suffix: '+' },
         { label: 'Satisfaction Rate', value: 99, suffix: '%' }
     ],
+    process: [
+        { title: "Discussion", desc: "Understanding your brand, goals, target audience, and project requirements." },
+        { title: "Research", desc: "Analyzing industry trends, competitors, and gathering creative inspiration." },
+        { title: "Design", desc: "Crafting the initial concepts and bringing the visual ideas to life." },
+        { title: "Revision", desc: "Refining the chosen concept based on your valuable feedback." },
+        { title: "Final Delivery", desc: "Handing over all high-resolution, print and web-ready source files." }
+    ],
     theme: {
         primaryColor: "#5A3A22",
         bgColor: "linear-gradient(to right top, #f5e4fb, #efdaf7, #e9d0f2, #e3c6ee, #ddbcea)"
@@ -150,6 +157,11 @@ export function useSiteData() {
                     // Stats: only use DB if entries have labels
                     if (db.stats && Array.isArray(db.stats) && db.stats.length > 0 && db.stats[0].label) {
                         merged.stats = db.stats;
+                    }
+
+                    // Process: only use DB if entries have titles
+                    if (db.process && Array.isArray(db.process) && db.process.length > 0 && db.process[0].title) {
+                        merged.process = db.process;
                     }
 
                     if (db.tools && Array.isArray(db.tools) && db.tools.length > 0 && db.tools[0].name) {

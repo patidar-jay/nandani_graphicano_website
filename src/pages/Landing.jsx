@@ -165,7 +165,7 @@ export default function Landing() {
                 <div style={{ height: '1px', background: 'linear-gradient(to right, transparent 0%, rgba(255,106,136,0.15) 50%, transparent 100%)' }}></div>
 
                 <Features />
-                <Process />
+                <Process data={data?.process || []} />
 
                 {/* ═══ Visual Divider ═══ */}
                 <div style={{ height: '1px', background: 'linear-gradient(to right, transparent 0%, rgba(255,106,136,0.15) 50%, transparent 100%)' }}></div>

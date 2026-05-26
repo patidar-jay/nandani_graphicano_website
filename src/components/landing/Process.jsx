@@ -4,17 +4,24 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Process() {
+export default function Process({ data }) {
     const processRef = useRef(null);
     const itemsRef = useRef([]);
 
-    const steps = [
-        { num: "01", title: "Discussion", desc: "Understanding your brand, goals, target audience, and project requirements." },
-        { num: "02", title: "Research", desc: "Analyzing industry trends, competitors, and gathering creative inspiration." },
-        { num: "03", title: "Design", desc: "Crafting the initial concepts and bringing the visual ideas to life." },
-        { num: "04", title: "Revision", desc: "Refining the chosen concept based on your valuable feedback." },
-        { num: "05", title: "Final Delivery", desc: "Handing over all high-resolution, print and web-ready source files." }
+    const defaultSteps = [
+        { title: "Discussion", desc: "Understanding your brand, goals, target audience, and project requirements." },
+        { title: "Research", desc: "Analyzing industry trends, competitors, and gathering creative inspiration." },
+        { title: "Design", desc: "Crafting the initial concepts and bringing the visual ideas to life." },
+        { title: "Revision", desc: "Refining the chosen concept based on your valuable feedback." },
+        { title: "Final Delivery", desc: "Handing over all high-resolution, print and web-ready source files." }
     ];
+
+    const displaySteps = data && data.length > 0 ? data : defaultSteps;
+
+    // Reset refs on data change
+    useEffect(() => {
+        itemsRef.current = itemsRef.current.slice(0, displaySteps.length);
+    }, [displaySteps]);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -52,7 +59,7 @@ export default function Process() {
                 }}></div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                    {steps.map((step, index) => (
+                    {displaySteps.map((step, index) => (
                         <div key={index} ref={el => itemsRef.current[index] = el} style={{
                             display: 'flex',
                             gap: '2rem',
@@ -75,7 +82,7 @@ export default function Process() {
                                 color: 'var(--accent)',
                                 boxShadow: '0 0 20px rgba(212, 175, 55, 0.1)'
                             }}>
-                                {step.num}
+                                {String(index + 1).padStart(2, '0')}
                             </div>
                             
                             {/* Step Content */}

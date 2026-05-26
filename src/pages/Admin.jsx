@@ -294,6 +294,20 @@ export default function Admin() {
         setFormData({ ...formData, stats: formData.stats.filter((_, i) => i !== index) });
     };
 
+    // Process/Workflow helpers
+    const updateProcess = (index, field, value) => {
+        const updated = [...(formData.process || [])];
+        updated[index] = { ...updated[index], [field]: value };
+        setFormData({ ...formData, process: updated });
+    };
+    const addProcess = () => {
+        setFormData({ ...formData, process: [...(formData.process || []), { title: '', desc: '' }] });
+    };
+    const removeProcess = (index) => {
+        if (!confirm('Remove this workflow step?')) return;
+        setFormData({ ...formData, process: formData.process.filter((_, i) => i !== index) });
+    };
+
     // Tools / Skills helpers
     const updateTool = (index, field, value) => {
         const updated = [...(formData.tools || [])];
@@ -382,6 +396,7 @@ export default function Admin() {
         { id: 'about', icon: 'fa-solid fa-user', label: 'About' },
         { id: 'stats', icon: 'fa-solid fa-chart-pie', label: 'Statistics' },
         { id: 'features', icon: 'fa-solid fa-star', label: 'Value Prop.' },
+        { id: 'process', icon: 'fa-solid fa-list-check', label: 'Workflow' },
         { id: 'tools', icon: 'fa-solid fa-wrench', label: 'Skills/Tools' },
         { id: 'services', icon: 'fa-solid fa-briefcase', label: 'Services' },
         { id: 'projects', icon: 'fa-solid fa-images', label: 'Projects' },
@@ -663,6 +678,46 @@ export default function Admin() {
                             </div>
                             <button className="btn-admin btn-outline" onClick={addFeature} style={{ marginTop: '1.5rem', width: '100%' }}>
                                 <i className="fa-solid fa-plus"></i> Add Value Proposition
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* ========== WORKFLOW (PROCESS) ========== */}
+                {activeTab === 'process' && (
+                    <div className="panel active">
+                        <div className="admin-section">
+                            <div className="admin-section-head">
+                                <h2>Workflow Steps</h2>
+                                <button className="btn-admin" onClick={() => handleSave('process')} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+                            </div>
+                            <p className="form-hint" style={{ marginBottom: '1.5rem' }}>Edit the steps shown in "The Workflow" section.</p>
+                            <div className="services-grid-admin">
+                                {(formData.process || []).map((step, idx) => (
+                                    <div key={idx} className="admin-card">
+                                        <div className="admin-card-header">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                                <span className="admin-card-num">{String(idx + 1).padStart(2, '0')}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                <button onClick={() => moveItem('process', idx, 'up')} disabled={idx === 0} style={{ background: 'none', border: 'none', cursor: idx === 0 ? 'not-allowed' : 'pointer', color: idx === 0 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Up"><i className="fa-solid fa-circle-arrow-up"></i></button>
+                                                <button onClick={() => moveItem('process', idx, 'down')} disabled={idx === (formData.process || []).length - 1} style={{ background: 'none', border: 'none', cursor: idx === (formData.process || []).length - 1 ? 'not-allowed' : 'pointer', color: idx === (formData.process || []).length - 1 ? 'var(--border)' : 'var(--text)', fontSize: '1.2rem' }} title="Move Down"><i className="fa-solid fa-circle-arrow-down"></i></button>
+                                                <button onClick={() => removeProcess(idx)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ff4444', fontSize: '1.2rem', marginLeft: '0.5rem' }} title="Remove"><i className="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Title</label>
+                                            <input type="text" className="form-input" value={step.title || ''} onChange={e => updateProcess(idx, 'title', e.target.value)} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Description</label>
+                                            <textarea className="form-textarea" rows="2" value={step.desc || ''} onChange={e => updateProcess(idx, 'desc', e.target.value)}></textarea>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <button className="btn-admin btn-outline" onClick={addProcess} style={{ marginTop: '1.5rem', width: '100%' }}>
+                                <i className="fa-solid fa-plus"></i> Add Workflow Step
                             </button>
                         </div>
                     </div>

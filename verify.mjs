@@ -7,8 +7,8 @@ https.get('https://nandani-graphicano-website.vercel.app/', (res) => {
     const match = data.match(/src="(\/assets\/index-[^"]+\.js)"/);
     if (match) {
       console.log('Current deployed JS:', match[1]);
-      console.log('Expected:', '/assets/index-DCwydXVu.js');
-      if (match[1] === '/assets/index-DCwydXVu.js') {
+      console.log('Expected:', '/assets/index-CPiWf2CZ.js');
+      if (match[1] === '/assets/index-CPiWf2CZ.js') {
         console.log('✅ LATEST CODE IS DEPLOYED');
       } else {
         console.log('❌ OLD CODE STILL DEPLOYED');
