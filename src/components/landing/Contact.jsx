@@ -63,29 +63,36 @@ export default function Contact({ data }) {
                                     custom: 'fa-solid fa-link'
                                 };
                                 const iconClass = platformIcons[link.platform] || 'fa-solid fa-link';
+                                let href = link.value || '';
+                                if (link.platform === 'whatsapp') href = `https://wa.me/${href.replace(/[^0-9]/g, '')}`;
+                                else if (link.platform === 'email') href = `mailto:${href}`;
+                                else if (link.platform === 'instagram' && !href.includes('instagram.com')) href = `https://instagram.com/${href.replace('@', '')}`;
+                                else if (link.platform === 'twitter' && !href.includes('twitter.com') && !href.includes('x.com')) href = `https://twitter.com/${href.replace('@', '')}`;
+                                else if (href && !href.startsWith('http') && !href.startsWith('mailto')) href = `https://${href}`;
+
                                 return (
-                                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                                        <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)' }}>
+                                    <a key={idx} href={href} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', textDecoration: 'none' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
+                                        <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)', transition: 'all 0.3s' }}>
                                             <i className={iconClass}></i>
                                         </div>
-                                        <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px' }}>{link.value}</span>
-                                    </div>
+                                        <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px', transition: 'color 0.3s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text)'}>{link.value}</span>
+                                    </a>
                                 );
                             })
                         ) : (
                             <>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                                    <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)' }}>
+                                <a href={`https://wa.me/${(data?.contact?.whatsapp || '+91 9343407099').replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', textDecoration: 'none' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
+                                    <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)', transition: 'all 0.3s' }}>
                                         <i className="fa-brands fa-whatsapp"></i>
                                     </div>
-                                    <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px' }}>{data?.contact?.whatsapp || '+91 9343407099'}</span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                                    <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)' }}>
+                                    <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px', transition: 'color 0.3s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text)'}>{data?.contact?.whatsapp || '+91 9343407099'}</span>
+                                </a>
+                                <a href={`mailto:${data?.contact?.email || 'Patidarnandani761@gmail.com'}`} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', textDecoration: 'none' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
+                                    <div style={{ width: '50px', height: '50px', background: 'var(--accent-glow)', color: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', border: '1px solid rgba(255, 106, 136, 0.2)', transition: 'all 0.3s' }}>
                                         <i className="fa-regular fa-envelope"></i>
                                     </div>
-                                    <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px' }}>{data?.contact?.email || 'Patidarnandani761@gmail.com'}</span>
-                                </div>
+                                    <span style={{ color: 'var(--text)', fontSize: '1.1rem', letterSpacing: '1px', transition: 'color 0.3s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text)'}>{data?.contact?.email || 'Patidarnandani761@gmail.com'}</span>
+                                </a>
                             </>
                         )}
                     </div>
