@@ -1172,11 +1172,12 @@ export default function Admin() {
                                     )}
 
                                     {/* Top Projects */}
-                                    {analytics.topProjects && analytics.topProjects.length > 0 && (
-                                        <div className="admin-card" style={{ marginTop: '1.5rem' }}>
-                                            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', color: 'var(--text)', marginBottom: '1.2rem' }}>
-                                                <i className="fa-solid fa-briefcase" style={{ color: 'var(--accent)', marginRight: '0.5rem' }}></i> Most Viewed Projects
-                                            </h3>
+                                    <div className="admin-card" style={{ marginTop: '1.5rem' }}>
+                                        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', color: 'var(--text)', marginBottom: '1.2rem' }}>
+                                            <i className="fa-solid fa-briefcase" style={{ color: 'var(--accent)', marginRight: '0.5rem' }}></i> Most Viewed Projects
+                                        </h3>
+                                        
+                                        {analytics.topProjects && analytics.topProjects.length > 0 ? (
                                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem' }}>
                                                 {analytics.topProjects.map(([project, totalTime], idx) => (
                                                     <div key={project} style={{
@@ -1195,8 +1196,13 @@ export default function Admin() {
                                                     </div>
                                                 ))}
                                             </div>
-                                        </div>
-                                    )}
+                                        ) : (
+                                            <div style={{ padding: '2rem', textAlign: 'center', background: 'var(--bg)', borderRadius: '10px', border: '1px dashed var(--border)' }}>
+                                                <i className="fa-solid fa-chart-bar" style={{ fontSize: '2rem', color: 'var(--muted)', opacity: 0.5, marginBottom: '1rem' }}></i>
+                                                <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>No project views recorded yet. Data will appear here once visitors start viewing your project pages.</p>
+                                            </div>
+                                        )}
+                                    </div>
 
                                     {/* Visitor Regions */}
                                     {analytics.topLocations && analytics.topLocations.length > 0 && (
